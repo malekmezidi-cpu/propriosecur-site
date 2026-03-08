@@ -329,7 +329,6 @@ export default function ProprioSecurLandingPage() {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": "ProprioSécur",
-        "areaServed": "Quebec",
         "telephone": "+1-514-659-3233",
         "email": "info@propriosecur.com",
         "description": "Solutions pour propriétaires en difficulté au Québec : préavis 60 jours, vente rapide de propriété, prêt privé immobilier et solutions achat-rachat.",
