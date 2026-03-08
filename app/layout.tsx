@@ -1,7 +1,8 @@
 import "./globals.css";
+
 export const metadata = {
   title: "ProprioSécur",
-  description: "Solutions immobilières pour propriétaires en difficulté au Québec",
+  description: "Solutions immobilières pour propriétaires en difficulté",
 };
 
 export default function RootLayout({
