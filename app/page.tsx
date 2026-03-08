@@ -345,10 +345,6 @@ export default function ProprioSecurLandingPage() {
           "latitude": "45.5017",
           "longitude": "-73.5673"
         },
-        "areaServed": {
-          "@type": "Place",
-          "name": "Grand Montréal"
-        },
         "serviceType": [
           "Préavis 60 jours",
           "Sauvetage immobilier",
