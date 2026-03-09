@@ -159,7 +159,7 @@ export default function ProprioSecurLandingPage() {
                       required
                       type="tel"
                       name="telephone"
-                      placeholder="514-659-3333"
+                      placeholder="514-659-3333"            
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
                   </div>
