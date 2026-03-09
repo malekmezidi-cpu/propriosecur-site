@@ -276,7 +276,7 @@ export default function ProprioSecurLandingPage() {
                   {
                     title: '1. Retards de paiement',
                     text: 'Avez-vous des retards hypothécaires ou des paiements difficiles à maintenir?'
-                  },
+                  },    
                   {
                     title: '2. Avis reçu',
                     text: 'Avez-vous reçu un préavis de 60 jours, une lettre de la banque ou un avis de défaut?'
