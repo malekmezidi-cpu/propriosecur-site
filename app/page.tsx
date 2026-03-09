@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function ProprioSecurLandingPage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);  
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);   
 
   useEffect(() => {
     const timer = setTimeout(() => setIsPopupOpen(true), 15000);
