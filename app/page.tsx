@@ -1394,9 +1394,10 @@ export default function ProprioSecurLandingPage() {
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet *</label>
                     <input
-                      required
-                      type="text"
-                      placeholder="Votre nom complet"
+  required
+  type="text"
+  name="nom"
+  placeholder="Votre nom complet"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
