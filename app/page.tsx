@@ -9,7 +9,7 @@ export default function ProprioSecurLandingPage() {
   useEffect(() => {
     const timer = setTimeout(() => setIsPopupOpen(true), 15000);
     return () => clearTimeout(timer);
-  }, []);
+  }, []); 
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
@@ -1386,7 +1386,11 @@ export default function ProprioSecurLandingPage() {
 
             <div className="grid gap-0 md:grid-cols-[1.05fr_0.95fr]">
               <div className="border-b border-slate-200 p-6 md:border-b-0 md:border-r">
-                <form className="space-y-4">
+                <form
+  action="https://formspree.io/f/mzdjdpvk"
+  method="POST"
+  className="space-y-4"
+>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet *</label>
                     <input
