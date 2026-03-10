@@ -5,6 +5,15 @@ export default function ProprioSecurLandingPage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mainNom, setMainNom] = useState("");
+  const [mainEmail, setMainEmail] = useState("");
+  const [mainTelephone, setMainTelephone] = useState("");
+  const [mainAdresse, setMainAdresse] = useState("");
+  const [mainSituation, setMainSituation] = useState("Choisir une option");
+  const [mainMessage, setMainMessage] = useState("");
+  const [isMainSubmitting, setIsMainSubmitting] = useState(false);
+  const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const lastMainDraftPayloadRef = useRef("");
   const [chatNom, setChatNom] = useState("");
   const [chatEmail, setChatEmail] = useState("");
   const [chatTelephone, setChatTelephone] = useState("");
@@ -82,6 +91,111 @@ Source: Brouillon automatique - Popup expert`
 
     return () => clearTimeout(timer);
   }, [isChatOpen, chatNom, chatEmail, chatTelephone, chatAdresse]);
+
+  useEffect(() => {
+    const email = mainEmail.trim();
+    const telephone = mainTelephone.trim();
+    const nom = mainNom.trim();
+    const adresse = mainAdresse.trim();
+
+    if (!email && !telephone) {
+      setMainDraftStatus("idle");
+      return;
+    }
+
+    const payloadKey = JSON.stringify({ nom, email, telephone, adresse, situation: mainSituation, message: mainMessage });
+    if (payloadKey === lastMainDraftPayloadRef.current) {
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        setMainDraftStatus("saving");
+
+        const formData = new FormData();
+        formData.append("nom", nom || "Brouillon sans nom");
+        formData.append("email", email || "Non fourni");
+        formData.append("telephone", telephone || "Non fourni");
+        formData.append("adresse_propriete", adresse || "Non fournie");
+        formData.append("situation", mainSituation || "Non fournie");
+        formData.append(
+          "message",
+          `Brouillon sauvegardé automatiquement
+Nom: ${nom || "Non fourni"}
+Courriel: ${email || "Non fourni"}
+Téléphone: ${telephone || "Non fourni"}
+Adresse de la propriété: ${adresse || "Non fournie"}
+Situation: ${mainSituation || "Non fournie"}
+Message: ${mainMessage || "Non fourni"}
+Source: Brouillon automatique - Formulaire principal`
+        );
+        formData.append("_subject", "Nouveau brouillon automatique - Formulaire principal");
+        formData.append("_captcha", "false");
+        formData.append("_template", "table");
+        formData.append("source", "Brouillon automatique - Formulaire principal");
+
+        const response = await fetch("https://formspree.io/f/mzdjdpvk", {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
+        });
+
+        if (response.ok) {
+          lastMainDraftPayloadRef.current = payloadKey;
+          setMainDraftStatus("saved");
+        } else {
+          setMainDraftStatus("error");
+        }
+      } catch {
+        setMainDraftStatus("error");
+      }
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, [mainNom, mainEmail, mainTelephone, mainAdresse, mainSituation, mainMessage]);
+
+  const handleMainSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsMainSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("nom", mainNom);
+      formData.append("email", mainEmail);
+      formData.append("telephone", mainTelephone);
+      formData.append("adresse_propriete", mainAdresse);
+      formData.append("situation", mainSituation);
+      formData.append("message", mainMessage);
+      formData.append("_subject", "Nouvelle demande - Formulaire principal ProprioSécur");
+      formData.append("_captcha", "false");
+      formData.append("_template", "table");
+      formData.append("source", "Formulaire principal");
+
+      const response = await fetch("https://formspree.io/f/mzdjdpvk", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("Merci. Votre demande a bien été envoyée.");
+        setMainNom("");
+        setMainEmail("");
+        setMainTelephone("");
+        setMainAdresse("");
+        setMainSituation("Choisir une option");
+        setMainMessage("");
+        setMainDraftStatus("idle");
+        lastMainDraftPayloadRef.current = "";
+      } else {
+        alert("Une erreur est survenue. Veuillez réessayer.");
+      }
+    } catch {
+      alert("Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setIsMainSubmitting(false);
+    }
+  };
 
   const handleChatSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -262,21 +376,16 @@ Source: Popup - Parler à un expert`
                   </p>
                 </div>
 
-                <form
-                  action="https://formspree.io/f/mzdjdpvk"
-                  method="POST"
-                  className="space-y-4"
-                >
-                  <input type="hidden" name="_subject" value="Nouvelle demande - Formulaire principal ProprioSécur" />
-                  <input type="hidden" name="_captcha" value="false" />
-                  <input type="hidden" name="_template" value="table" />
-                  <input type="hidden" name="source" value="Formulaire principal" />
+                <form onSubmit={handleMainSubmit} className="space-y-4">
+                  
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet</label>
                     <input
                       required
                       type="text"
                       name="nom"
+                      value={mainNom}
+                      onChange={(e) => setMainNom(e.target.value)}
                       placeholder="Votre nom"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
@@ -288,6 +397,8 @@ Source: Popup - Parler à un expert`
                       required
                       type="email"
                       name="email"
+                      value={mainEmail}
+                      onChange={(e) => setMainEmail(e.target.value)}
                       placeholder="votre@courriel.com"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
@@ -299,6 +410,8 @@ Source: Popup - Parler à un expert`
                       required
                       type="tel"
                       name="telephone"
+                      value={mainTelephone}
+                      onChange={(e) => setMainTelephone(e.target.value)}
                       placeholder="514-659-3233"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
@@ -310,6 +423,8 @@ Source: Popup - Parler à un expert`
                       required
                       type="text"
                       name="adresse_propriete"
+                      value={mainAdresse}
+                      onChange={(e) => setMainAdresse(e.target.value)}
                       placeholder="Adresse complète de la propriété"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
@@ -320,6 +435,8 @@ Source: Popup - Parler à un expert`
                     <select
                       required
                       name="situation"
+                      value={mainSituation}
+                      onChange={(e) => setMainSituation(e.target.value)}
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100">
                       <option>Choisir une option</option>
                       <option>Avis de 60 jours</option>
@@ -335,17 +452,24 @@ Source: Popup - Parler à un expert`
                     <label className="mb-2 block text-sm font-medium text-slate-700">Message</label>
                     <textarea
                       name="message"
+                      value={mainMessage}
+                      onChange={(e) => setMainMessage(e.target.value)}
                       rows={4}
                       placeholder="Expliquez brièvement votre situation"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
                   </div>
 
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+                    Les informations saisies peuvent être sauvegardées afin que nous puissions vous recontacter.
+                  </div>
+
                   <button
                     type="submit"
-                    className="w-full rounded-2xl bg-blue-900 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-blue-800"
+                    disabled={isMainSubmitting}
+                    className="w-full rounded-2xl bg-blue-900 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    Envoyer ma demande
+                    {isMainSubmitting ? "Envoi en cours..." : "Envoyer ma demande"}
                   </button>
 
                   <p className="text-center text-xs text-slate-500">
@@ -1583,15 +1707,6 @@ Source: Popup - Parler à un expert`
 
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
                     Les informations saisies peuvent être sauvegardées afin que nous puissions vous recontacter.
-                    {draftStatus === "saving" && (
-                      <p className="mt-2 text-xs font-medium text-blue-700">Sauvegarde automatique du brouillon…</p>
-                    )}
-                    {draftStatus === "saved" && (
-                      <p className="mt-2 text-xs font-medium text-green-700">Brouillon sauvegardé.</p>
-                    )}
-                    {draftStatus === "error" && (
-                      <p className="mt-2 text-xs font-medium text-red-600">La sauvegarde automatique a échoué. Vous pouvez quand même envoyer le formulaire.</p>
-                    )}
                   </div>
 
                   <button
