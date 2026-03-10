@@ -1582,7 +1582,7 @@ Source: Popup - Parler à un expert`
                   </div>
 
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
-                    En commençant à remplir ce formulaire, vous acceptez que vos informations puissent être sauvegardées de façon sécurisée afin que ProprioSécur puisse vous recontacter, même si vous ne terminez pas l’envoi.
+                    Les informations saisies peuvent être sauvegardées afin que nous puissions vous recontacter.
                     {draftStatus === "saving" && (
                       <p className="mt-2 text-xs font-medium text-blue-700">Sauvegarde automatique du brouillon…</p>
                     )}
