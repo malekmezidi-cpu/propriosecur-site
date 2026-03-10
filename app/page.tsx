@@ -95,7 +95,7 @@ Source: Brouillon automatique - Popup expert`
       const adresse = String(submitted.get("adresse_propriete") || "");
 
       const formData = new FormData();
-      formData.append("nom", `${nom} | Tél: ${telephone} | Adresse: ${adresse}`);
+      formData.append("nom", nom);
       formData.append("email", email);
       formData.append("telephone", telephone);
       formData.append("adresse_propriete", adresse);
