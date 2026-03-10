@@ -7,7 +7,7 @@ export default function ProprioSecurLandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);   
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPopupOpen(true), 15000);
+    const timer = setTimeout(() => setIsPopupOpen(true), 7000);
     return () => clearTimeout(timer);
   }, []); 
   return (
