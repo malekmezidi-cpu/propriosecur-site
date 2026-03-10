@@ -1315,12 +1315,12 @@ export default function ProprioSecurLandingPage() {
                   <div className="inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-700 shadow-sm">
                     Situation urgente
                   </div>
-                  <h3 className="mt-4 max-w-xl text-3xl font-extrabold leading-tight text-slate-900 md:text-4xl">
-                    Avez-vous reçu un préavis de 60 jours?
-                  </h3>
-                  <p className="mt-4 max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
-                    Plus vous agissez tôt, plus il est possible d’évaluer vos options et de protéger votre propriété. Demandez une analyse confidentielle pour mieux comprendre la situation et choisir la bonne stratégie.
-                  </p>
+<h3 className="text-2xl font-bold text-slate-900">
+Avez-vous reçu un avis de 60 jours, besoin d’un prêt privé ou souhaitez-vous vendre votre propriété rapidement ?
+</h3>
+                  <p className="mt-2 text-slate-600">
+Nous analysons votre situation gratuitement et en toute confidentialité afin de vous proposer la meilleure solution pour votre propriété.
+</p>
                 </div>
                 <button
                   type="button"
