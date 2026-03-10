@@ -1315,7 +1315,7 @@ export default function ProprioSecurLandingPage() {
                   <div className="inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-700 shadow-sm">
                     Situation urgente
                   </div>
-<h3 className="text-2xl font-bold text-slate-900">
+<h3 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
 Avez-vous reçu un avis de 60 jours, besoin d’un prêt privé ou souhaitez-vous vendre votre propriété rapidement ?
 </h3>
                   <p className="mt-2 text-slate-600">
