@@ -1412,7 +1412,33 @@ Nous analysons votre situation gratuitement et en toute confidentialité afin de
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
+<div>
+<label className="mb-2 block text-sm font-medium text-slate-700">
+Téléphone *
+</label>
 
+<input
+required
+type="tel"
+name="telephone"
+placeholder="514-659-3333"
+className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+/>
+</div>
+
+<div>
+<label className="mb-2 block text-sm font-medium text-slate-700">
+Adresse de la propriété *
+</label>
+
+<input
+required
+type="text"
+name="adresse"
+placeholder="Adresse de la propriété"
+className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+/>
+</div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Téléphone *</label>
                     <input
