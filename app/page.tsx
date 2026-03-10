@@ -4,12 +4,68 @@ import { useEffect, useState } from "react";
 export default function ProprioSecurLandingPage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);   
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [chatNom, setChatNom] = useState("");
+  const [chatEmail, setChatEmail] = useState("");
+  const [chatTelephone, setChatTelephone] = useState("");
+  const [chatAdresse, setChatAdresse] = useState("");
+  const [isChatSubmitting, setIsChatSubmitting] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPopupOpen(true), 7000);
+    const timer = setTimeout(() => setIsPopupOpen(true), 15000);
     return () => clearTimeout(timer);
-  }, []); 
+  }, []);
+
+  const handleChatSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsChatSubmitting(true);
+
+    try {
+      const submitted = new FormData(e.currentTarget);
+      const nom = String(submitted.get("nom") || "");
+      const email = String(submitted.get("email") || "");
+      const telephone = String(submitted.get("telephone") || "");
+      const adresse = String(submitted.get("adresse_propriete") || "");
+
+      const formData = new FormData();
+      formData.append("nom", `${nom} | Tél: ${telephone} | Adresse: ${adresse}`);
+      formData.append("email", email);
+      formData.append("telephone", telephone);
+      formData.append("adresse_propriete", adresse);
+      formData.append(
+        "message",
+        `Téléphone: ${telephone}
+Adresse de la propriété: ${adresse}
+Source: Popup - Parler à un expert`
+      );
+      formData.append("_subject", "Nouvelle demande - Parler à un expert");
+      formData.append("_captcha", "false");
+      formData.append("_template", "table");
+      formData.append("source", "Popup - Parler à un expert");
+
+      const response = await fetch("https://formspree.io/f/mzdjdpvk", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("Merci. Votre demande a bien été envoyée.");
+        setChatNom("");
+        setChatEmail("");
+        setChatTelephone("");
+        setChatAdresse("");
+        setIsChatOpen(false);
+      } else {
+        alert("Une erreur est survenue. Veuillez réessayer.");
+      }
+    } catch {
+      alert("Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setIsChatSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
@@ -102,10 +158,10 @@ export default function ProprioSecurLandingPage() {
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <a
-                  href="tel:5146593333"
+                  href="tel:5146593233"
                   className="rounded-2xl bg-green-500 px-6 py-4 text-center text-base font-semibold text-white shadow-lg transition hover:bg-green-400"
                 >
-                  📞 514-659-3333
+                  📞 514-659-3233
                 </a>
                 <a
                   href="#contact"
@@ -142,6 +198,10 @@ export default function ProprioSecurLandingPage() {
                   method="POST"
                   className="space-y-4"
                 >
+                  <input type="hidden" name="_subject" value="Nouvelle demande - Formulaire principal ProprioSécur" />
+                  <input type="hidden" name="_captcha" value="false" />
+                  <input type="hidden" name="_template" value="table" />
+                  <input type="hidden" name="source" value="Formulaire principal" />
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet</label>
                     <input
@@ -154,12 +214,23 @@ export default function ProprioSecurLandingPage() {
                   </div>
 
                   <div>
+                    <label className="mb-2 block text-sm font-medium text-slate-700">Courriel</label>
+                    <input
+                      required
+                      type="email"
+                      name="email"
+                      placeholder="votre@courriel.com"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                    />
+                  </div>
+
+                  <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Téléphone</label>
                     <input
                       required
                       type="tel"
                       name="telephone"
-                      placeholder="514-659-3333"            
+                      placeholder="514-659-3233"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
                   </div>
@@ -169,8 +240,8 @@ export default function ProprioSecurLandingPage() {
                     <input
                       required
                       type="text"
-                      name="adresse"
-                      placeholder="Adresse complète"
+                      name="adresse_propriete"
+                      placeholder="Adresse complète de la propriété"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
                   </div>
@@ -182,7 +253,7 @@ export default function ProprioSecurLandingPage() {
                       name="situation"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100">
                       <option>Choisir une option</option>
-                      <option>Préavis 60 jours</option>
+                      <option>Avis de 60 jours</option>
                       <option>Prêt privé immobilier</option>
                       <option>Propriété à vendre rapidement</option>
                       <option>Succession</option>
@@ -200,9 +271,6 @@ export default function ProprioSecurLandingPage() {
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
                   </div>
-
-                  <input type="hidden" name="_subject" value="Nouvelle demande ProprioSécur" />
-                  <input type="hidden" name="_captcha" value="false" />
 
                   <button
                     type="submit"
@@ -276,10 +344,10 @@ export default function ProprioSecurLandingPage() {
                   {
                     title: '1. Retards de paiement',
                     text: 'Avez-vous des retards hypothécaires ou des paiements difficiles à maintenir?'
-                  },    
+                  },
                   {
                     title: '2. Avis reçu',
-                    text: 'Avez-vous reçu un préavis de 60 jours, une lettre de la banque ou un avis de défaut?'
+                    text: 'Avez-vous reçu un avis de 60 jours, une lettre de la banque ou un avis de défaut?'
                   },
                   {
                     title: '3. Besoin de vendre vite',
@@ -341,9 +409,9 @@ export default function ProprioSecurLandingPage() {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": "ProprioSécur",
-        "telephone": "+1-514-659-3333",
+        "telephone": "+1-514-659-3233",
         "email": "info@propriosecur.com",
-        "description": "Solutions pour propriétaires en difficulté au Québec : préavis 60 jours, vente rapide de propriété, prêt privé immobilier et solutions achat-rachat.",
+        "description": "Solutions pour propriétaires en difficulté au Québec : avis de 60 jours, vente rapide de propriété, prêt privé immobilier et solutions achat-rachat.",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "4053 Rue Bélair",
@@ -362,7 +430,7 @@ export default function ProprioSecurLandingPage() {
           "name": "Grand Montréal"
         },
         "serviceType": [
-          "Préavis 60 jours",
+          "Avis de 60 jours",
           "Sauvetage immobilier",
           "Vente rapide de propriété",
           "Prêt privé immobilier"
@@ -406,7 +474,7 @@ export default function ProprioSecurLandingPage() {
           <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-300">Guide pratique</div>
           <h2 className="mt-3 text-3xl font-bold md:text-5xl">Comment éviter la saisie immobilière au Québec</h2>
           <p className="mt-5 text-lg leading-8 text-slate-300">
-            Lorsqu’un propriétaire reçoit un préavis hypothécaire ou un avis de 60 jours, il est important d’agir rapidement.
+            Lorsqu’un propriétaire reçoit un avis de 60 jours hypothécaire ou un avis de 60 jours, il est important d’agir rapidement.
             Plus la situation est prise en charge tôt, plus il est possible d’évaluer les solutions disponibles et de protéger
             la valeur de la propriété.
           </p>
@@ -449,7 +517,7 @@ export default function ProprioSecurLandingPage() {
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200">
                 <div className="text-sm font-semibold uppercase tracking-wide text-slate-500">Situation</div>
-                <p className="mt-3 leading-7 text-slate-600">Préavis hypothécaire reçu, retards de paiement et besoin de vendre rapidement une propriété nécessitant des ajustements.</p>
+                <p className="mt-3 leading-7 text-slate-600">Avis de 60 jours hypothécaire reçu, retards de paiement et besoin de vendre rapidement une propriété nécessitant des ajustements.</p>
               </div>
               <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200">
                 <div className="text-sm font-semibold uppercase tracking-wide text-slate-500">Analyse</div>
@@ -480,7 +548,7 @@ export default function ProprioSecurLandingPage() {
               <h2 className="mt-3 text-3xl font-bold md:text-4xl">Nous intervenons notamment dans ces contextes</h2>
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 {[
-                  'Préavis 60 jours',
+                  'Avis de 60 jours',
                   'Propriété à vendre rapidement',
                   'Prêt privé immobilier',
                   'Succession complexe',
@@ -561,7 +629,7 @@ export default function ProprioSecurLandingPage() {
                   {
                     name: 'Propriétaire',
                     city: 'Laval',
-                    text: 'Après avoir reçu un préavis hypothécaire, j’étais très inquiet. L’équipe a analysé mon dossier rapidement et m’a expliqué les solutions possibles. Le service a été humain, professionnel et très rassurant.',
+                    text: 'Après avoir reçu un avis de 60 jours hypothécaire, j’étais très inquiet. L’équipe a analysé mon dossier rapidement et m’a expliqué les solutions possibles. Le service a été humain, professionnel et très rassurant.',
                   },
                 ].map((item) => (
                   <div key={item.name} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
@@ -579,7 +647,7 @@ export default function ProprioSecurLandingPage() {
           <div className="mb-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-slate-700">
             <h3 className="text-xl font-bold text-slate-900">Information importante pour les propriétaires au Québec</h3>
             <p className="mt-2 leading-7">
-              Plusieurs propriétaires cherchent des réponses lorsqu’ils font face à un préavis de 60 jours, un défaut hypothécaire ou un risque de saisie immobilière.
+              Plusieurs propriétaires cherchent des réponses lorsqu’ils font face à un avis de 60 jours, un défaut hypothécaire ou un risque de saisie immobilière.
               Les articles ci‑dessous expliquent les étapes possibles, les délais au Québec et les solutions comme la vente rapide,
               le prêt privé immobilier ou d’autres stratégies pour stabiliser une situation financière.
             </p>
@@ -588,7 +656,7 @@ export default function ProprioSecurLandingPage() {
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-900">Blog</div>
             <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">Conseils et informations utiles</h2>
             <p className="mt-4 text-lg leading-8 text-slate-600">
-              Découvrez des articles utiles pour mieux comprendre les solutions possibles en cas de préavis 60 jours, de vente rapide ou de besoin de prêt privé immobilier.
+              Découvrez des articles utiles pour mieux comprendre les solutions possibles en cas de avis de 60 jours, de vente rapide ou de besoin de prêt privé immobilier.
             </p>
           </div>
 
@@ -596,7 +664,7 @@ export default function ProprioSecurLandingPage() {
             {[
               {
                 slug: 'preavis-60-jours',
-                title: 'Préavis 60 jours : que faire rapidement?',
+                title: 'Avis de 60 jours : que faire rapidement?',
                 text: 'Les premières étapes à prendre lorsqu’un propriétaire reçoit un avis de 60 jours et veut protéger sa propriété.',
               },
               {
@@ -626,13 +694,13 @@ export default function ProprioSecurLandingPage() {
               },
               {
                 slug: 'vendre-preavis-60',
-                title: 'Peut-on vendre sa maison avec un préavis de 60 jours?',
-                text: 'Comprendre si un propriétaire peut vendre sa propriété après avoir reçu un préavis hypothécaire de 60 jours et quelles sont les options possibles.',
+                title: 'Peut-on vendre sa maison avec un avis de 60 jours?',
+                text: 'Comprendre si un propriétaire peut vendre sa propriété après avoir reçu un avis de 60 jours hypothécaire de 60 jours et quelles sont les options possibles.',
               },
               {
                 slug: 'saisie-delai-quebec',
                 title: 'Combien de temps avant qu’une maison soit saisie au Québec?',
-                text: 'Comprendre les délais entre un défaut de paiement, un préavis de 60 jours et les étapes pouvant mener à une saisie immobilière.',
+                text: 'Comprendre les délais entre un défaut de paiement, un avis de 60 jours et les étapes pouvant mener à une saisie immobilière.',
               },
               {
                 slug: 'arreter-saisie-quebec',
@@ -681,7 +749,7 @@ export default function ProprioSecurLandingPage() {
               },
               {
                 slug: 'difference-avis-defaut-preavis',
-                title: 'Quelle est la différence entre un avis de défaut et un préavis de 60 jours?',
+                title: 'Quelle est la différence entre un avis de défaut et un avis de 60 jours?',
                 text: 'Comprendre les étapes juridiques qui mènent à une procédure hypothécaire au Québec.',
               },
               {
@@ -745,15 +813,15 @@ export default function ProprioSecurLandingPage() {
         <section className="bg-slate-50 py-20">
           <div className="mx-auto max-w-5xl px-6 space-y-8">
             <article id="article-preavis-60-jours" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-              <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Préavis 60 jours</div>
-              <h3 className="mt-4 text-2xl font-bold text-slate-900">Préavis 60 jours : que faire rapidement?</h3>
-              <p className="mt-4 leading-8 text-slate-600">Lorsqu’un propriétaire reçoit un préavis de 60 jours, il est important d’agir rapidement. La première étape consiste à comprendre le délai, à vérifier le montant dû et à évaluer la valeur réelle de la propriété. Selon la situation, plusieurs solutions peuvent être envisagées, comme une vente rapide, un prêt privé temporaire ou une structure achat-rachat. Plus l’analyse est faite tôt, plus les options sont nombreuses.</p>
+              <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Avis de 60 jours</div>
+              <h3 className="mt-4 text-2xl font-bold text-slate-900">Avis de 60 jours : que faire rapidement?</h3>
+              <p className="mt-4 leading-8 text-slate-600">Lorsqu’un propriétaire reçoit un avis de 60 jours, il est important d’agir rapidement. La première étape consiste à comprendre le délai, à vérifier le montant dû et à évaluer la valeur réelle de la propriété. Selon la situation, plusieurs solutions peuvent être envisagées, comme une vente rapide, un prêt privé temporaire ou une structure achat-rachat. Plus l’analyse est faite tôt, plus les options sont nombreuses.</p>
             </article>
 
             <article id="article-vendre-preavis-60" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-              <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Préavis 60 jours</div>
-              <h3 className="mt-4 text-2xl font-bold text-slate-900">Peut-on vendre sa maison avec un préavis de 60 jours?</h3>
-              <p className="mt-4 leading-8 text-slate-600">Oui, dans plusieurs cas un propriétaire peut vendre sa maison même après avoir reçu un préavis hypothécaire de 60 jours. La vente peut permettre de rembourser la dette avant que la situation n’évolue vers une procédure plus grave. Il est toutefois important d’agir rapidement afin de trouver un acheteur, de négocier avec le créancier et de compléter la transaction chez le notaire avant l’expiration des délais.</p>
+              <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Avis de 60 jours</div>
+              <h3 className="mt-4 text-2xl font-bold text-slate-900">Peut-on vendre sa maison avec un avis de 60 jours?</h3>
+              <p className="mt-4 leading-8 text-slate-600">Oui, dans plusieurs cas un propriétaire peut vendre sa maison même après avoir reçu un avis de 60 jours hypothécaire de 60 jours. La vente peut permettre de rembourser la dette avant que la situation n’évolue vers une procédure plus grave. Il est toutefois important d’agir rapidement afin de trouver un acheteur, de négocier avec le créancier et de compléter la transaction chez le notaire avant l’expiration des délais.</p>
             </article>
 
             <article id="article-hypotheque-impayee" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
@@ -783,13 +851,13 @@ export default function ProprioSecurLandingPage() {
             <article id="article-termes-hypothecaires" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
               <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Hypothèque</div>
               <h3 className="mt-4 text-2xl font-bold text-slate-900">Comprendre les définitions des termes hypothécaires</h3>
-              <p className="mt-4 leading-8 text-slate-600">Les documents hypothécaires contiennent souvent plusieurs termes techniques qui peuvent être difficiles à comprendre pour les propriétaires. Des expressions comme taux variable, amortissement, préavis hypothécaire ou pénalité de remboursement anticipé peuvent avoir un impact important sur votre situation financière. Comprendre ces termes permet de mieux évaluer les options disponibles et de prendre des décisions éclairées concernant sa propriété.</p>
+              <p className="mt-4 leading-8 text-slate-600">Les documents hypothécaires contiennent souvent plusieurs termes techniques qui peuvent être difficiles à comprendre pour les propriétaires. Des expressions comme taux variable, amortissement, avis de 60 jours hypothécaire ou pénalité de remboursement anticipé peuvent avoir un impact important sur votre situation financière. Comprendre ces termes permet de mieux évaluer les options disponibles et de prendre des décisions éclairées concernant sa propriété.</p>
             </article>
 
             <article id="article-saisie-delai-quebec" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
               <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Saisie immobilière</div>
               <h3 className="mt-4 text-2xl font-bold text-slate-900">Combien de temps avant qu’une maison soit saisie au Québec?</h3>
-              <p className="mt-4 leading-8 text-slate-600">Au Québec, une saisie immobilière ne se produit généralement pas immédiatement après un défaut de paiement. Le créancier envoie d’abord un avis de défaut puis, dans plusieurs cas, un préavis de 60 jours. Ce délai permet au propriétaire de régulariser la situation, vendre la propriété ou trouver une solution de financement. Comprendre ces délais est essentiel pour agir rapidement et éviter que la situation n’évolue vers une procédure judiciaire plus complexe.</p>
+              <p className="mt-4 leading-8 text-slate-600">Au Québec, une saisie immobilière ne se produit généralement pas immédiatement après un défaut de paiement. Le créancier envoie d’abord un avis de défaut puis, dans plusieurs cas, un avis de 60 jours. Ce délai permet au propriétaire de régulariser la situation, vendre la propriété ou trouver une solution de financement. Comprendre ces délais est essentiel pour agir rapidement et éviter que la situation n’évolue vers une procédure judiciaire plus complexe.</p>
             </article>
 
             <article id="article-arreter-saisie-quebec" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
@@ -819,7 +887,7 @@ export default function ProprioSecurLandingPage() {
             <article id="article-dation-paiement-quebec" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
               <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Hypothèque</div>
               <h3 className="mt-4 text-2xl font-bold text-slate-900">Qu’est‑ce que la dation en paiement au Québec?</h3>
-              <p className="mt-4 leading-8 text-slate-600">La dation en paiement est une procédure permettant au créancier hypothécaire de reprendre une propriété lorsque la dette n’est pas remboursée. Cette situation survient généralement après un préavis hypothécaire et certains délais légaux. Comprendre ce processus permet aux propriétaires d’agir rapidement afin d’évaluer les solutions possibles avant que la situation n’évolue vers une perte de propriété.</p>
+              <p className="mt-4 leading-8 text-slate-600">La dation en paiement est une procédure permettant au créancier hypothécaire de reprendre une propriété lorsque la dette n’est pas remboursée. Cette situation survient généralement après un avis de 60 jours hypothécaire et certains délais légaux. Comprendre ce processus permet aux propriétaires d’agir rapidement afin d’évaluer les solutions possibles avant que la situation n’évolue vers une perte de propriété.</p>
             </article>
 
             <article id="article-refinancer-maison-difficulte" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
@@ -861,15 +929,15 @@ export default function ProprioSecurLandingPage() {
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Pages locales</div>
             <h2 className="mt-3 text-3xl font-bold md:text-5xl">Solutions pour propriétaires dans plusieurs villes</h2>
             <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-              Nous aidons des propriétaires confrontés à un préavis de 60 jours, une difficulté hypothécaire ou une vente urgente dans plusieurs villes du Québec.
+              Nous aidons des propriétaires confrontés à un avis de 60 jours, une difficulté hypothécaire ou une vente urgente dans plusieurs villes du Québec.
             </p>
           </div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {[
-              'Préavis 60 jours Montréal',
-              'Préavis 60 jours Laval',
-              'Préavis 60 jours Longueuil',
+              'Avis de 60 jours Montréal',
+              'Avis de 60 jours Laval',
+              'Avis de 60 jours Longueuil',
               'Vendre maison rapidement Montréal',
               'Vendre maison rapidement Laval',
               'Saisie immobilière Montréal',
@@ -890,7 +958,7 @@ export default function ProprioSecurLandingPage() {
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Zones desservies</div>
             <h2 className="mt-3 text-3xl font-bold md:text-5xl">Nous aidons des propriétaires partout dans le Grand Montréal</h2>
             <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-              ProprioSécur accompagne des propriétaires confrontés à un préavis de 60 jours, un défaut hypothécaire ou une situation urgente dans plusieurs villes du Québec.
+              ProprioSécur accompagne des propriétaires confrontés à un avis de 60 jours, un défaut hypothécaire ou une situation urgente dans plusieurs villes du Québec.
             </p>
           </div>
 
@@ -929,10 +997,10 @@ export default function ProprioSecurLandingPage() {
 
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Préavis 60 jours Montréal</div>
-              <h2 className="mt-3 text-3xl font-bold md:text-5xl">Préavis de 60 jours à Montréal : quelles solutions?</h2>
+              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Avis de 60 jours Montréal</div>
+              <h2 className="mt-3 text-3xl font-bold md:text-5xl">Avis de 60 jours à Montréal : quelles solutions?</h2>
               <p className="mt-5 text-lg leading-8 text-slate-600">
-                Si vous avez reçu un préavis de 60 jours à Montréal, il est important d’agir rapidement.
+                Si vous avez reçu un avis de 60 jours à Montréal, il est important d’agir rapidement.
                 Selon la situation, plusieurs solutions peuvent être envisagées : vente rapide de la propriété,
                 prêt privé immobilier, restructuration ou analyse d’un scénario achat-rachat.
               </p>
@@ -942,7 +1010,7 @@ export default function ProprioSecurLandingPage() {
                 Plus l’intervention est précoce, plus les options sont nombreuses.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <span className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">Préavis 60 jours Montréal</span>
+                <span className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">Avis de 60 jours Montréal</span>
                 <span className="rounded-full border border-green-200 bg-green-50 px-4 py-2 text-sm font-semibold text-green-700">Analyse confidentielle</span>
                 <span className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700">Solutions rapides</span>
               </div>
@@ -962,7 +1030,7 @@ export default function ProprioSecurLandingPage() {
               </p>
               <div className="mt-6 space-y-3 text-sm text-slate-700">
                 <div className="rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200">📍 4053 Rue Bélair, Montréal, QC H2A 2G4</div>
-                <div className="rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200">📞 514-659-3333</div>
+                <div className="rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200">📞 514-659-3233</div>
                 <div className="rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200">✉️ info@propriosecur.com</div>
               </div>
             </div>
@@ -1018,10 +1086,10 @@ export default function ProprioSecurLandingPage() {
 
               <div className="flex flex-col gap-4 lg:items-end">
                 <a
-                  href="tel:5146593333"
+                  href="tel:5146593233"
                   className="w-full rounded-2xl bg-white px-6 py-4 text-center text-lg font-bold text-blue-900 shadow-sm transition hover:bg-slate-100 lg:w-auto"
                 >
-                  📞 514-659-3333
+                  📞 514-659-3233
                 </a>
                 <a
                   href="mailto:info@propriosecur.com"
@@ -1043,7 +1111,7 @@ export default function ProprioSecurLandingPage() {
             </div>
             <h2 className="mt-4 text-3xl font-bold md:text-5xl text-slate-900">Avis de 60 jours hypothécaire?</h2>
             <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-              Si vous avez reçu un avis de 60 jours ou un préavis hypothécaire, il est important d’agir rapidement.
+              Si vous avez reçu un avis de 60 jours ou un avis de 60 jours hypothécaire, il est important d’agir rapidement.
               ProprioSécur peut analyser votre situation et vous proposer une solution afin d’éviter la perte
               de votre propriété.
             </p>
@@ -1074,7 +1142,7 @@ export default function ProprioSecurLandingPage() {
         <section className="hidden">
           <h2>Solutions pour propriétaires en difficulté au Québec</h2>
           <p>
-            ProprioSécur aide les propriétaires confrontés à un préavis de 60 jours,
+            ProprioSécur aide les propriétaires confrontés à un avis de 60 jours,
             un défaut hypothécaire ou un risque de saisie immobilière au Québec.
             Nos solutions incluent la vente rapide de propriété, l’achat‑rachat,
             le prêt privé immobilier et l’analyse de situations urgentes.
@@ -1097,7 +1165,7 @@ export default function ProprioSecurLandingPage() {
           <p>
             Plusieurs propriétaires recherchent sur Google des solutions comme
             vendre maison rapidement Montréal, éviter saisie immobilière Québec,
-            prêt privé immobilier Montréal ou solution après préavis 60 jours.
+            prêt privé immobilier Montréal ou solution après avis de 60 jours.
           </p>
         </section>
 
@@ -1106,10 +1174,10 @@ export default function ProprioSecurLandingPage() {
       {/* Sticky mobile call bar to increase calls */}
       <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white p-3 shadow-lg md:hidden">
         <a
-          href="tel:5146593333"
+          href="tel:5146593233"
           className="block w-full rounded-2xl bg-green-600 px-6 py-4 text-center text-lg font-bold text-white hover:bg-green-700"
         >
-          📞 Appeler maintenant – 514‑659‑3333
+          📞 Appeler maintenant – 514‑659‑3233
         </a>
       </div>
 
@@ -1193,10 +1261,10 @@ export default function ProprioSecurLandingPage() {
               Si votre situation est urgente, contactez‑nous immédiatement pour analyser votre dossier.
             </p>
             <a
-              href="tel:5146593333"
+              href="tel:5146593233"
               className="mt-4 inline-block rounded-2xl bg-white px-6 py-3 font-bold text-red-600 hover:bg-slate-100"
             >
-              📞 514‑659‑3333
+              📞 514‑659‑3233
             </a>
           </div>
         </div>
@@ -1207,7 +1275,7 @@ export default function ProprioSecurLandingPage() {
             <div className="rounded-2xl border border-green-200 bg-green-50 p-6 text-sm text-slate-700">
               <div className="font-semibold text-slate-900 mb-3">Articles populaires :</div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <a href="#article-preavis-60-jours" className="hover:underline">Préavis 60 jours : que faire</a>
+                <a href="#article-preavis-60-jours" className="hover:underline">Avis de 60 jours : que faire</a>
                 <a href="#article-eviter-la-saisie" className="hover:underline">Éviter la saisie immobilière</a>
                 <a href="#article-hypotheque-impayee" className="hover:underline">Hypothèque impayée</a>
                 <a href="#article-pret-prive-immobilier" className="hover:underline">Prêt privé immobilier</a>
@@ -1222,13 +1290,13 @@ export default function ProprioSecurLandingPage() {
               <div className="font-semibold text-slate-900 mb-4">Recherches fréquentes des propriétaires :</div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {[
-                  'préavis 60 jours hypothèque',
+                  'avis de 60 jours hypothèque',
                   'saisie immobilière Québec',
                   'vendre maison rapidement Québec',
                   'défaut hypothécaire que faire',
                   'prêt privé immobilier urgence',
                   'éviter saisie maison',
-                  'vendre maison avec préavis 60 jours'
+                  'vendre maison avec avis de 60 jours'
                 ].map((k) => (
                   <div key={k} className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-medium text-slate-700 ring-1 ring-slate-200">
                     {k}
@@ -1263,7 +1331,7 @@ export default function ProprioSecurLandingPage() {
             <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
               <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-900">Coordonnées</h3>
               <ul className="mt-6 space-y-4 text-slate-600">
-                <li className="flex items-start gap-3"><span className="text-lg">📞</span><a href="tel:5146593333" className="font-medium hover:text-slate-900">514-659-3333</a></li>
+                <li className="flex items-start gap-3"><span className="text-lg">📞</span><a href="tel:5146593233" className="font-medium hover:text-slate-900">514-659-3233</a></li>
                 <li className="flex items-start gap-3"><span className="text-lg">✉️</span><a href="mailto:info@propriosecur.com" className="font-medium hover:text-slate-900">info@propriosecur.com</a></li>
                 <li className="flex items-start gap-3"><span className="text-lg">📍</span><span>4053 Rue Bélair, Montréal, QC H2A 2G4</span></li>
               </ul>
@@ -1295,7 +1363,7 @@ export default function ProprioSecurLandingPage() {
 
           <div className="mt-8 flex flex-col gap-3 border-t border-slate-200 pt-6 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
             <div>© {new Date().getFullYear()} ProprioSécur. Tous droits réservés.</div>
-            <div>Propriétaires en difficulté • Préavis 60 jours • Vente rapide • Prêt privé immobilier</div>
+            <div>Propriétaires en difficulté • Avis de 60 jours • Vente rapide • Prêt privé immobilier</div>
           </div>
         </div>
       </footer>
@@ -1315,12 +1383,12 @@ export default function ProprioSecurLandingPage() {
                   <div className="inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-700 shadow-sm">
                     Situation urgente
                   </div>
-<h3 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
-Avez-vous reçu un avis de 60 jours, besoin d’un prêt privé ou souhaitez-vous vendre votre propriété rapidement ?
-</h3>
-                  <p className="mt-2 text-slate-600">
-Nous analysons votre situation gratuitement et en toute confidentialité afin de vous proposer la meilleure solution pour votre propriété.
-</p>
+                  <h3 className="mt-4 max-w-xl text-3xl font-extrabold leading-tight text-slate-900 md:text-4xl">
+                    Avez-vous reçu un avis de 60 jours, besoin d’un prêt privé ou souhaitez-vous vendre votre propriété rapidement?
+                  </h3>
+                  <p className="mt-4 max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
+                    Nous analysons votre situation gratuitement et en toute confidentialité afin de vous proposer la meilleure solution pour votre propriété.
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -1386,65 +1454,43 @@ Nous analysons votre situation gratuitement et en toute confidentialité afin de
 
             <div className="grid gap-0 md:grid-cols-[1.05fr_0.95fr]">
               <div className="border-b border-slate-200 p-6 md:border-b-0 md:border-r">
-                <form
-  action="https://formspree.io/f/mzdjdpvk"
-  method="POST"
-  className="space-y-4"
->
+                <form onSubmit={handleChatSubmit} className="space-y-4">
+
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet *</label>
                     <input
-  required
-  type="text"
-  name="nom"
-  placeholder="Votre nom complet"
+                      required
+                      type="text"
+                      name="nom"
+                      value={chatNom}
+                      onChange={(e) => setChatNom(e.target.value)}
+                      placeholder="Votre nom complet"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
 
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Courriel *</label>
-<input
-  required
-  type="email"
-  name="email"
-  placeholder="votre@courriel.com"
+                    <input
+                      required
+                      type="email"
+                      name="email"
+                      value={chatEmail}
+                      onChange={(e) => setChatEmail(e.target.value)}
+                      placeholder="votre@courriel.com"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
-<div>
-<label className="mb-2 block text-sm font-medium text-slate-700">
-Téléphone *
-</label>
 
-<input
-required
-type="tel"
-name="telephone"
-placeholder="514-659-3333"
-className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-/>
-</div>
-
-<div>
-<label className="mb-2 block text-sm font-medium text-slate-700">
-Adresse de la propriété *
-</label>
-
-<input
-required
-type="text"
-name="adresse"
-placeholder="Adresse de la propriété"
-className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-/>
-</div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Téléphone *</label>
                     <input
                       required
                       type="tel"
-                      placeholder="514-659-3333"
+                      name="telephone"
+                      value={chatTelephone}
+                      onChange={(e) => setChatTelephone(e.target.value)}
+                      placeholder="514-659-3233"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
@@ -1454,16 +1500,20 @@ className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none tran
                     <input
                       required
                       type="text"
-                      placeholder="Adresse complète"
+                      name="adresse_propriete"
+                      value={chatAdresse}
+                      onChange={(e) => setChatAdresse(e.target.value)}
+                      placeholder="Adresse complète de la propriété"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full rounded-2xl bg-red-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-red-700"
+                    disabled={isChatSubmitting}
+                    className="w-full rounded-2xl bg-red-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    Accéder au chat
+                    {isChatSubmitting ? "Envoi en cours..." : "Accéder au chat"}
                   </button>
 
                   <p className="text-center text-xs text-slate-500">
