@@ -10,7 +10,7 @@ export default function ProprioSecurLandingPage() {
   const [chatTelephone, setChatTelephone] = useState("");
   const [chatAdresse, setChatAdresse] = useState("");
   const [isChatSubmitting, setIsChatSubmitting] = useState(false);
-  const [chatConsentDraft, setChatConsentDraft] = useState(false);
+  
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
 
@@ -20,7 +20,7 @@ export default function ProprioSecurLandingPage() {
   }, []);
 
   useEffect(() => {
-    if (!isChatOpen || !chatConsentDraft) {
+    if (!isChatOpen) {
       setDraftStatus("idle");
       return;
     }
@@ -81,7 +81,7 @@ Source: Brouillon automatique - Popup expert`
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [isChatOpen, chatConsentDraft, chatNom, chatEmail, chatTelephone, chatAdresse]);
+  }, [isChatOpen, chatNom, chatEmail, chatTelephone, chatAdresse]);
 
   const handleChatSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -122,7 +122,6 @@ Source: Popup - Parler à un expert`
         setChatEmail("");
         setChatTelephone("");
         setChatAdresse("");
-        setChatConsentDraft(false);
         setDraftStatus("idle");
         lastDraftPayloadRef.current = "";
         setIsChatOpen(false);
@@ -1517,7 +1516,6 @@ Source: Popup - Parler à un expert`
                 type="button"
                 onClick={() => {
                   setIsChatOpen(false);
-                  setChatConsentDraft(false);
                   setDraftStatus("idle");
                   lastDraftPayloadRef.current = "";
                 }}
@@ -1583,28 +1581,15 @@ Source: Popup - Parler à un expert`
                     />
                   </div>
 
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <label className="flex items-start gap-3 text-sm leading-6 text-slate-700">
-                      <input
-                        type="checkbox"
-                        checked={chatConsentDraft}
-                        onChange={(e) => setChatConsentDraft(e.target.checked)}
-                        className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-900 focus:ring-blue-200"
-                      />
-                      <span>
-                        J’accepte que mes informations puissent être sauvegardées de façon sécurisée même si je ne termine pas l’envoi, afin que ProprioSécur puisse me recontacter.
-                      </span>
-                    </label>
-                    <p className="mt-2 text-xs text-slate-500">
-                      Cette sauvegarde automatique ne s’active qu’après votre consentement.
-                    </p>
-                    {chatConsentDraft && draftStatus === "saving" && (
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+                    En commençant à remplir ce formulaire, vous acceptez que vos informations puissent être sauvegardées de façon sécurisée afin que ProprioSécur puisse vous recontacter, même si vous ne terminez pas l’envoi.
+                    {draftStatus === "saving" && (
                       <p className="mt-2 text-xs font-medium text-blue-700">Sauvegarde automatique du brouillon…</p>
                     )}
-                    {chatConsentDraft && draftStatus === "saved" && (
+                    {draftStatus === "saved" && (
                       <p className="mt-2 text-xs font-medium text-green-700">Brouillon sauvegardé.</p>
                     )}
-                    {chatConsentDraft && draftStatus === "error" && (
+                    {draftStatus === "error" && (
                       <p className="mt-2 text-xs font-medium text-red-600">La sauvegarde automatique a échoué. Vous pouvez quand même envoyer le formulaire.</p>
                     )}
                   </div>
