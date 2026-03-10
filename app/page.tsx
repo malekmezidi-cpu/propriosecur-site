@@ -193,10 +193,78 @@ Source: Popup - Parler à un expert`
                   </p>
                 </div>
 
-                <form
-                  action="https://formspree.io/f/mzdjdpvk"
-                  method="POST"
-                  className="space-y-4"
+<form
+  action="https://formspree.io/f/TON_ID"
+  method="POST"
+  className="space-y-4"
+>
+
+<div>
+<label className="mb-2 block text-sm font-medium text-slate-700">
+Nom complet *
+</label>
+<input
+required
+type="text"
+name="nom"
+placeholder="Votre nom complet"
+className="w-full rounded-xl border border-slate-300 px-4 py-3"
+/>
+</div>
+
+<div>
+<label className="mb-2 block text-sm font-medium text-slate-700">
+Courriel *
+</label>
+<input
+required
+type="email"
+name="email"
+placeholder="votre@courriel.com"
+className="w-full rounded-xl border border-slate-300 px-4 py-3"
+/>
+</div>
+
+<div>
+<label className="mb-2 block text-sm font-medium text-slate-700">
+Téléphone *
+</label>
+<input
+required
+type="tel"
+name="telephone"
+placeholder="514-777-7777"
+className="w-full rounded-xl border border-slate-300 px-4 py-3"
+/>
+</div>
+
+<div>
+<label className="mb-2 block text-sm font-medium text-slate-700">
+Adresse de la propriété *
+</label>
+<input
+required
+type="text"
+name="adresse_propriete"
+placeholder="Adresse complète"
+className="w-full rounded-xl border border-slate-300 px-4 py-3"
+/>
+</div>
+
+<input
+type="hidden"
+name="message"
+value="Source: Popup - Parler à un expert"
+/>
+
+<button
+type="submit"
+className="w-full rounded-xl bg-red-600 px-6 py-4 text-white font-bold hover:bg-red-700"
+>
+Accéder au chat
+</button>
+
+</form>
                 >
                   <input type="hidden" name="_subject" value="Nouvelle demande - Formulaire principal ProprioSécur" />
                   <input type="hidden" name="_captcha" value="false" />
