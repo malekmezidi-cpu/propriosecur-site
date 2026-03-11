@@ -28,7 +28,6 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-
       <body>{children}</body>
     </html>
   );
