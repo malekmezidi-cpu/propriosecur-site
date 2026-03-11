@@ -217,7 +217,7 @@ Source: Brouillon automatique - Formulaire principal`
         "message",
         `Téléphone: ${telephone}
 Adresse de la propriété: ${adresse}
-Source: Popup - Parler à un expert`
+Source: Popup - Parler à un expert maintenant`
       );
       formData.append("_subject", "Nouvelle demande - Parler à un expert");
       formData.append("_captcha", "false");
@@ -284,7 +284,7 @@ Source: Popup - Parler à un expert`
               href="#contact"
               className="rounded-2xl bg-red-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-red-700"
             >
-              FAIRE UNE DEMANDE EN LIGNE
+              Analyser ma situation gratuitement
             </a>
           </div>
         </div>
@@ -299,7 +299,7 @@ Source: Popup - Parler à un expert`
             <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">FAQ</a>
             <a href="#blog" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Blog</a>
             <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Contact</a>
-            <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="mt-2 inline-flex justify-center rounded-2xl bg-red-600 px-5 py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">FAIRE UNE DEMANDE EN LIGNE</a>
+            <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="mt-2 inline-flex justify-center rounded-2xl bg-red-600 px-5 py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">Analyser ma situation gratuitement</a>
           </div>
         </div>
       )}
@@ -350,7 +350,7 @@ Source: Popup - Parler à un expert`
                   href="#contact"
                   className="rounded-2xl border border-white/30 bg-white/10 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white/20"
                 >
-                  FAIRE UNE DEMANDE EN LIGNE
+                  Analyser ma situation gratuitement
                 </a>
               </div>
 
@@ -481,72 +481,7 @@ Source: Popup - Parler à un expert`
           </div>
         </section>
 
-        <section className="bg-slate-50 py-20" id="avis-60-jours">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-              <div>
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-red-600">Avis de 60 jours</div>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-                  Vous avez reçu un avis de 60 jours hypothécaire?
-                </h2>
-                <p className="mt-5 text-lg leading-8 text-slate-600">
-                  Un avis de 60 jours est une procédure utilisée par un créancier hypothécaire lorsqu’un propriétaire est en défaut de paiement. Cela signifie qu’il faut agir rapidement pour analyser la situation, protéger l’équité de la propriété et évaluer les solutions possibles.
-                </p>
-                <p className="mt-4 leading-8 text-slate-600">
-                  Chez ProprioSécur, nous analysons votre dossier gratuitement et en toute confidentialité afin de vous orienter vers la meilleure option selon votre situation financière, la valeur de votre propriété et les délais disponibles.
-                </p>
-                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                  <a
-                    href="#contact"
-                    className="inline-flex justify-center rounded-2xl bg-red-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-red-700"
-                  >
-                    Analyser ma situation gratuitement
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => setIsChatOpen(true)}
-                    className="inline-flex justify-center rounded-2xl border border-slate-300 bg-white px-6 py-4 text-base font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
-                  >
-                    💬 Parler à un expert
-                  </button>
-                </div>
-              </div>
-
-              <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Solutions possibles</div>
-                <div className="mt-6 space-y-4">
-                  {[
-                    {
-                      title: 'Prêt privé immobilier',
-                      text: 'Peut permettre de régler une urgence ou de gagner du temps dans certains dossiers.',
-                    },
-                    {
-                      title: 'Solution achat-rachat',
-                      text: 'Peut offrir une solution temporaire avec possibilité de rachat futur selon la structure du dossier.',
-                    },
-                    {
-                      title: 'Vente rapide de la propriété',
-                      text: 'Peut permettre d’éviter l’aggravation de la situation et de protéger une partie de l’équité.',
-                    },
-                  ].map((item) => (
-                    <div key={item.title} className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
-                      <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-                      <p className="mt-2 leading-7 text-slate-600">{item.text}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 rounded-2xl bg-blue-950 p-5 text-white">
-                  <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-300">Analyse gratuite</div>
-                  <p className="mt-3 text-sm leading-6 text-blue-100">
-                    Réponse rapide, sans obligation, avec une approche confidentielle et adaptée à votre situation.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-6 py-20" id="services">
+<section className="mx-auto max-w-7xl px-6 py-20" id="services">
           <div className="mb-12 overflow-hidden rounded-3xl shadow-lg">
             <img
               src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop"
@@ -621,7 +556,7 @@ Source: Popup - Parler à un expert`
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <a href="#contact" className="inline-flex rounded-2xl bg-red-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-red-700">
-                  FAIRE UNE DEMANDE EN LIGNE
+                  Analyser ma situation gratuitement
                 </a>
                 <button
                   type="button"
@@ -762,7 +697,7 @@ Source: Popup - Parler à un expert`
               href="#contact"
               className="inline-flex rounded-2xl bg-red-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-red-700"
             >
-              FAIRE UNE DEMANDE EN LIGNE confidentielle
+              Analyser ma situation gratuitement confidentielle
             </a>
           </div>
         </div>
@@ -1274,7 +1209,7 @@ Source: Popup - Parler à un expert`
               </div>
               <div className="mt-8">
                 <a href="#contact" className="inline-flex rounded-2xl bg-red-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-red-700">
-                  FAIRE UNE DEMANDE EN LIGNE
+                  Analyser ma situation gratuitement
                 </a>
               </div>
             </div>
@@ -1390,7 +1325,7 @@ Source: Popup - Parler à un expert`
                 href="#contact"
                 className="rounded-2xl border border-red-600 px-8 py-4 text-lg font-semibold text-red-600 hover:bg-blue-50"
               >
-                FAIRE UNE DEMANDE EN LIGNE
+                Analyser ma situation gratuitement
               </a>
             </div>
           </div>
@@ -1594,7 +1529,7 @@ Source: Popup - Parler à un expert`
                 <li className="flex items-start gap-3"><span className="text-lg">📍</span><span>4053 Rue Bélair, Montréal, QC H2A 2G4</span></li>
               </ul>
               <a href="#contact" className="mt-6 inline-flex rounded-2xl bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">
-                FAIRE UNE DEMANDE EN LIGNE
+                Analyser ma situation gratuitement
               </a>
               <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-slate-200 shadow-sm">
                 <iframe
@@ -1675,7 +1610,7 @@ Source: Popup - Parler à un expert`
                   onClick={() => setIsPopupOpen(false)}
                   className="inline-flex min-w-[260px] justify-center rounded-2xl bg-red-600 px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-red-700"
                 >
-                  FAIRE UNE DEMANDE EN LIGNE
+                  Analyser ma situation gratuitement
                 </a>
                 <button
                   type="button"
