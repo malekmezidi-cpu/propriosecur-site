@@ -26,12 +26,96 @@ export default function ProprioSecurLandingPage() {
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
   const chatAddressInputRef = useRef<HTMLInputElement | null>(null);
-  const googleMapsInitializedRef = useRef(false);
+  const googleMapsLoadAttemptsRef = useRef(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPopupOpen(true), 15000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (typeof window === "undefined") return;
+    if (!GOOGLE_MAPS_API_KEY) return;
+
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const setupAutocomplete = (
+      input: HTMLInputElement | null,
+      setValue: (value: string) => void
+    ) => {
+      const googleMaps = (window as any).google?.maps;
+      if (!googleMaps?.places?.Autocomplete) return false;
+      if (!input || input.dataset.autocompleteInitialized === "true") return true;
+
+      const autocomplete = new googleMaps.places.Autocomplete(input, {
+        types: ["geocode"],
+        componentRestrictions: { country: "ca" },
+        fields: ["formatted_address", "address_components", "geometry"],
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        const formattedAddress = place?.formatted_address || input.value || "";
+        setValue(formattedAddress);
+      });
+
+      input.dataset.autocompleteInitialized = "true";
+      return true;
+    };
+
+    const addAutocompleteDropdownStyle = () => {
+      if (document.getElementById("google-autocomplete-zindex")) return;
+      const style = document.createElement("style");
+      style.id = "google-autocomplete-zindex";
+      style.innerHTML = ".pac-container{z-index:99999 !important;}";
+      document.head.appendChild(style);
+    };
+
+    const initializeAutocomplete = () => {
+      addAutocompleteDropdownStyle();
+      const mainReady = setupAutocomplete(mainAddressInputRef.current, setMainAdresse);
+      const chatReady = !isChatOpen || setupAutocomplete(chatAddressInputRef.current, setChatAdresse);
+      return mainReady && chatReady;
+    };
+
+    const waitForGoogleMaps = () => {
+      const ready = initializeAutocomplete();
+      if (ready) return;
+
+      googleMapsLoadAttemptsRef.current += 1;
+      if (googleMapsLoadAttemptsRef.current > 30) return;
+
+      retryTimer = setTimeout(waitForGoogleMaps, 500);
+    };
+
+    const existingScript = document.querySelector(
+      'script[data-google-maps-autocomplete="true"]'
+    ) as HTMLScriptElement | null;
+
+    if ((window as any).google?.maps?.places?.Autocomplete) {
+      waitForGoogleMaps();
+      return () => {
+        if (retryTimer) clearTimeout(retryTimer);
+      };
+    }
+
+    if (existingScript) {
+      existingScript.addEventListener("load", waitForGoogleMaps);
+      waitForGoogleMaps();
+      return () => {
+        existingScript.removeEventListener("load", waitForGoogleMaps);
+        if (retryTimer) clearTimeout(retryTimer);
+      };
+    }
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+    script.dataset.googleMapsAutocomplete = "true";
+    script.addEventListener("load", waitForGoogleMaps);
+    document.head.appendChild(script);
+
+    return () => {
+      script.removeEventListener("load", waitForGoogleMaps);
+      if (retryTimer) clearTimeout(retryTimer);
+    };
+  }, [isChatOpen]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
