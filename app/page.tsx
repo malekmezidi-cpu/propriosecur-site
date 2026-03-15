@@ -36,7 +36,7 @@ export default function ProprioSecurLandingPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (googleMapsInitializedRef.current) return;
-    if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "VOTRE_CLE_GOOGLE_MAPS") return;
+    if (!GOOGLE_MAPS_API_KEY) return;
 
     const initializeAutocomplete = () => {
       const googleMaps = (window as any).google?.maps;
