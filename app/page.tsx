@@ -17,6 +17,7 @@ export default function ProprioSecurLandingPage() {
   const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastMainDraftPayloadRef = useRef("");
   const mainAddressInputRef = useRef<HTMLInputElement | null>(null);
+  const mainAutocompleteRef = useRef<any>(null);
   const [chatNom, setChatNom] = useState("");
   const [chatEmail, setChatEmail] = useState("");
   const [chatTelephone, setChatTelephone] = useState("");
@@ -26,8 +27,7 @@ export default function ProprioSecurLandingPage() {
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
   const chatAddressInputRef = useRef<HTMLInputElement | null>(null);
-  const googleMapsLoadAttemptsRef = useRef(0);
-  const googleMapsInitializedRef = useRef(false);
+  const chatAutocompleteRef = useRef<any>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -35,16 +35,25 @@ export default function ProprioSecurLandingPage() {
 
     let retryTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const setupAutocomplete = (
+    const addAutocompleteDropdownStyle = () => {
+      if (document.getElementById("google-autocomplete-zindex")) return;
+      const style = document.createElement("style");
+      style.id = "google-autocomplete-zindex";
+      style.innerHTML = ".pac-container{z-index:99999 !important;}";
+      document.head.appendChild(style);
+    };
+
+    const attachAutocomplete = (
       input: HTMLInputElement | null,
+      autocompleteRef: React.MutableRefObject<any>,
       setValue: (value: string) => void
     ) => {
       const googleMaps = (window as any).google?.maps;
-      if (!googleMaps?.places?.Autocomplete) return false;
-      if (!input || input.dataset.autocompleteInitialized === "true") return true;
+      if (!googleMaps?.places?.Autocomplete || !input) return false;
+      if (autocompleteRef.current) return true;
 
       const autocomplete = new googleMaps.places.Autocomplete(input, {
-        types: ["geocode"],
+        types: ["address"],
         componentRestrictions: { country: "ca" },
         fields: ["formatted_address", "address_components", "geometry"],
       });
@@ -55,35 +64,33 @@ export default function ProprioSecurLandingPage() {
         setValue(formattedAddress);
       });
 
-      input.dataset.autocompleteInitialized = "true";
+      autocompleteRef.current = autocomplete;
       return true;
-    };
-
-    const addAutocompleteDropdownStyle = () => {
-      if (document.getElementById("google-autocomplete-zindex")) return;
-      const style = document.createElement("style");
-      style.id = "google-autocomplete-zindex";
-      style.innerHTML = ".pac-container{z-index:99999 !important;}";
-      document.head.appendChild(style);
     };
 
     const initializeAutocomplete = () => {
       addAutocompleteDropdownStyle();
-      const mainReady = setupAutocomplete(mainAddressInputRef.current, setMainAdresse);
-      const chatReady = !isChatOpen || setupAutocomplete(chatAddressInputRef.current, setChatAdresse);
-      const ready = mainReady && chatReady;
-      if (ready) googleMapsInitializedRef.current = true;
-      return ready;
+      const mainReady = attachAutocomplete(
+        mainAddressInputRef.current,
+        mainAutocompleteRef,
+        setMainAdresse
+      );
+
+      const chatReady = !isChatOpen
+        ? true
+        : attachAutocomplete(
+            chatAddressInputRef.current,
+            chatAutocompleteRef,
+            setChatAdresse
+          );
+
+      return mainReady && chatReady;
     };
 
     const waitForGoogleMaps = () => {
       const ready = initializeAutocomplete();
       if (ready) return;
-
-      googleMapsLoadAttemptsRef.current += 1;
-      if (googleMapsLoadAttemptsRef.current > 30) return;
-
-      retryTimer = setTimeout(waitForGoogleMaps, 500);
+      retryTimer = setTimeout(waitForGoogleMaps, 400);
     };
 
     const existingScript = document.querySelector(
@@ -520,6 +527,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={mainAdresse}
                       onChange={(e) => setMainAdresse(e.target.value)}
                       placeholder="Adresse complète de la propriété"
+                      autoComplete="off"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
                   </div>
@@ -1796,6 +1804,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={chatAdresse}
                       onChange={(e) => setChatAdresse(e.target.value)}
                       placeholder="Adresse complète de la propriété"
+                      autoComplete="off"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
