@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
+const GOOGLE_MAPS_API_KEY = "AIzaSyDsu7V4Uk52slzyLNTk0OyWBj2032YrteA";
+
 export default function ProprioSecurLandingPage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -14,6 +16,7 @@ export default function ProprioSecurLandingPage() {
   const [isMainSubmitting, setIsMainSubmitting] = useState(false);
   const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastMainDraftPayloadRef = useRef("");
+  const mainAddressInputRef = useRef<HTMLInputElement | null>(null);
   const [chatNom, setChatNom] = useState("");
   const [chatEmail, setChatEmail] = useState("");
   const [chatTelephone, setChatTelephone] = useState("");
@@ -22,10 +25,72 @@ export default function ProprioSecurLandingPage() {
   
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
+  const chatAddressInputRef = useRef<HTMLInputElement | null>(null);
+  const googleMapsInitializedRef = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPopupOpen(true), 7000);
+    const timer = setTimeout(() => setIsPopupOpen(true), 15000);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (googleMapsInitializedRef.current) return;
+    if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "VOTRE_CLE_GOOGLE_MAPS") return;
+
+    const initializeAutocomplete = () => {
+      const googleMaps = (window as any).google?.maps;
+      if (!googleMaps?.places?.Autocomplete) return;
+
+      const setupAutocomplete = (
+        input: HTMLInputElement | null,
+        setValue: (value: string) => void
+      ) => {
+        if (!input || input.dataset.autocompleteInitialized === "true") return;
+
+        const autocomplete = new googleMaps.places.Autocomplete(input, {
+          types: ["address"],
+          componentRestrictions: { country: "ca" },
+          fields: ["formatted_address", "address_components"],
+        });
+
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          const formattedAddress = place?.formatted_address || input.value || "";
+          setValue(formattedAddress);
+        });
+
+        input.dataset.autocompleteInitialized = "true";
+      };
+
+      setupAutocomplete(mainAddressInputRef.current, setMainAdresse);
+      setupAutocomplete(chatAddressInputRef.current, setChatAdresse);
+      googleMapsInitializedRef.current = true;
+    };
+
+    const existingScript = document.querySelector(
+      'script[data-google-maps-autocomplete="true"]'
+    ) as HTMLScriptElement | null;
+
+    if ((window as any).google?.maps?.places?.Autocomplete) {
+      initializeAutocomplete();
+      return;
+    }
+
+    if (existingScript) {
+      existingScript.addEventListener("load", initializeAutocomplete);
+      return () => existingScript.removeEventListener("load", initializeAutocomplete);
+    }
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`;
+    script.async = true;
+    script.defer = true;
+    script.dataset.googleMapsAutocomplete = "true";
+    script.addEventListener("load", initializeAutocomplete);
+    document.head.appendChild(script);
+
+    return () => script.removeEventListener("load", initializeAutocomplete);
   }, []);
 
   useEffect(() => {
@@ -420,6 +485,7 @@ Source: Popup - Parler à un expert maintenant`
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Adresse de la propriété</label>
                     <input
+                      ref={mainAddressInputRef}
                       required
                       type="text"
                       name="adresse_propriete"
@@ -1695,6 +1761,7 @@ Source: Popup - Parler à un expert maintenant`
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Adresse de la propriété *</label>
                     <input
+                      ref={chatAddressInputRef}
                       required
                       type="text"
                       name="adresse_propriete"
