@@ -13,6 +13,13 @@ export default function ProprioSecurLandingPage() {
   const [mainSituation, setMainSituation] = useState("Choisir une option");
   const [mainMessage, setMainMessage] = useState("");
   const [isMainSubmitting, setIsMainSubmitting] = useState(false);
+  const [mainErrors, setMainErrors] = useState({
+    nom: false,
+    email: false,
+    telephone: false,
+    adresse: false,
+    situation: false,
+  });
   const [offerAdresse, setOfferAdresse] = useState("");
   const [offerType, setOfferType] = useState("Type de propriété");
   const [offerEtat, setOfferEtat] = useState("État de la propriété");
@@ -172,11 +179,11 @@ Source: Brouillon automatique - Formulaire principal`
 
     setMainMessage(
       details.length > 0
-        ? `Demande d’estimation rapide
+        ? `Demande d'estimation rapide
 
 ${details.join("
 ")}`
-        : "Demande d’estimation rapide (estimation)"
+        : "Demande d'estimation rapide (estimation)"
     );
 
     const contactSection = document.getElementById("contact");
@@ -185,8 +192,29 @@ ${details.join("
     }
   };
 
+  const validateMainForm = () => {
+    const emailValue = mainEmail.trim();
+    const phoneDigits = mainTelephone.split("").filter((char) => "0123456789".includes(char)).join("");
+
+    const newErrors = {
+      nom: mainNom.trim() === "",
+      email: !emailValue.includes("@") || !emailValue.includes("."),
+      telephone: phoneDigits.length < 10,
+      adresse: mainAdresse.trim() === "",
+      situation: mainSituation === "Choisir une option",
+    };
+
+    setMainErrors(newErrors);
+    return !Object.values(newErrors).some(Boolean);
+  };
+
   const handleMainSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateMainForm()) {
+      return;
+    }
+
     setIsMainSubmitting(true);
 
     try {
@@ -422,9 +450,16 @@ Source: Popup - Parler à un expert maintenant`
                       type="text"
                       name="nom"
                       value={mainNom}
-                      onChange={(e) => setMainNom(e.target.value)}
+                      onChange={(e) => {
+                        setMainNom(e.target.value);
+                        if (mainErrors.nom) setMainErrors((prev) => ({ ...prev, nom: false }));
+                      }}
                       placeholder="Votre nom"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        mainErrors.nom
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -435,9 +470,16 @@ Source: Popup - Parler à un expert maintenant`
                       type="email"
                       name="email"
                       value={mainEmail}
-                      onChange={(e) => setMainEmail(e.target.value)}
+                      onChange={(e) => {
+                        setMainEmail(e.target.value);
+                        if (mainErrors.email) setMainErrors((prev) => ({ ...prev, email: false }));
+                      }}
                       placeholder="votre@courriel.com"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        mainErrors.email
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -448,9 +490,16 @@ Source: Popup - Parler à un expert maintenant`
                       type="tel"
                       name="telephone"
                       value={mainTelephone}
-                      onChange={(e) => setMainTelephone(e.target.value)}
+                      onChange={(e) => {
+                        setMainTelephone(e.target.value);
+                        if (mainErrors.telephone) setMainErrors((prev) => ({ ...prev, telephone: false }));
+                      }}
                       placeholder="514-659-3233"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        mainErrors.telephone
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -461,9 +510,16 @@ Source: Popup - Parler à un expert maintenant`
                       type="text"
                       name="adresse_propriete"
                       value={mainAdresse}
-                      onChange={(e) => setMainAdresse(e.target.value)}
+                      onChange={(e) => {
+                        setMainAdresse(e.target.value);
+                        if (mainErrors.adresse) setMainErrors((prev) => ({ ...prev, adresse: false }));
+                      }}
                       placeholder="Adresse complète de la propriété"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        mainErrors.adresse
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -473,8 +529,15 @@ Source: Popup - Parler à un expert maintenant`
                       required
                       name="situation"
                       value={mainSituation}
-                      onChange={(e) => setMainSituation(e.target.value)}
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
+                      onChange={(e) => {
+                        setMainSituation(e.target.value);
+                        if (mainErrors.situation) setMainErrors((prev) => ({ ...prev, situation: false }));
+                      }}
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        mainErrors.situation
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}>
                       <option>Choisir une option</option>
                       <option>Avis de 60 jours</option>
                       <option>Prêt privé immobilier</option>
@@ -508,6 +571,12 @@ Source: Popup - Parler à un expert maintenant`
                   >
                     {isMainSubmitting ? "Envoi en cours..." : "Envoyer ma demande"}
                   </button>
+
+                  {Object.values(mainErrors).some(Boolean) && (
+                    <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                      Veuillez compléter tous les champs obligatoires en rouge avant d’envoyer votre demande.
+                    </p>
+                  )}
 
                   <p className="text-center text-xs text-slate-500">
                     Service confidentiel. Aucune obligation.
