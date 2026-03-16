@@ -170,11 +170,12 @@ Source: Brouillon automatique - Formulaire principal`
       offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
     ].filter(Boolean);
 
-    setMainMessage(
-setMainMessage(
+   setMainMessage(
   details.length > 0
-    ? `Demande d’est
-    );
+    ? `Demande d’estimation rapide
+${details.join("\n")}`
+    : "Demande d’estimation rapide (estimation)"
+);
 
     const contactSection = document.getElementById("contact");
     if (contactSection) {
