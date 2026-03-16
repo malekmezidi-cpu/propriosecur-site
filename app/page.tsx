@@ -25,7 +25,7 @@ export default function ProprioSecurLandingPage() {
   const lastDraftPayloadRef = useRef("");
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPopupOpen(true), 7000);
+    const timer = setTimeout(() => setIsPopupOpen(true), 10000);
     return () => clearTimeout(timer);
   }, []);
 
