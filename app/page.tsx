@@ -166,16 +166,7 @@ Source: Brouillon automatique - Formulaire principal`
 
 const details = [
   offerType !== "Type de propriété" ? `Type de propriété : ${offerType}` : "",
-  offerEtat !== "État de la propriété" ? `État de la propriété : ${offerEtat}` : "",
-  offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
-].filter(Boolean);
-
-setMainMessage(
-
-setMainMessage(
-details.length > 0
-? `Demande d’estimation rapide
-
+  offerEtat !== "
 ${details.join("\n")}`
 : "Demande d’estimation rapide (estimation)"
 );
