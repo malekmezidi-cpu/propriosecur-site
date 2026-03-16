@@ -1516,15 +1516,15 @@ Source: Popup - Parler à un expert maintenant`
                 Donnez quelques informations de base pour préparer une première estimation rapide avant une discussion avec un expert.
               </p>
               <div className="mt-6 grid gap-4 md:grid-cols-4">
-                <input type="text" placeholder="Ville" className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
-                <select className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100">
+                <input type="text" placeholder="Ville" className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100" />
+                <select className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
                   <option>Type de propriété</option>
                   <option>Maison unifamiliale</option>
                   <option>Duplex / Triplex</option>
                   <option>Plex / Immeuble</option>
                 </select>
-                <input type="text" placeholder="Nombre de chambres" className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
-                <input type="text" placeholder="État général" className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
+                <input type="text" placeholder="Nombre de chambres" className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100" />
+                <input type="text" placeholder="État général" className="rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100" />
               </div>
               <div className="mt-5">
                 <a href="#contact" className="inline-flex rounded-2xl bg-red-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-red-700">
@@ -1768,7 +1768,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={chatNom}
                       onChange={(e) => setChatNom(e.target.value)}
                       placeholder="Votre nom complet"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
@@ -1781,7 +1781,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={chatEmail}
                       onChange={(e) => setChatEmail(e.target.value)}
                       placeholder="votre@courriel.com"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
@@ -1794,7 +1794,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={chatTelephone}
                       onChange={(e) => setChatTelephone(e.target.value)}
                       placeholder="514-659-3233"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
@@ -1807,7 +1807,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={chatAdresse}
                       onChange={(e) => setChatAdresse(e.target.value)}
                       placeholder="Adresse complète de la propriété"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
