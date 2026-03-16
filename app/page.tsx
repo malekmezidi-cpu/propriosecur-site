@@ -25,7 +25,7 @@ export default function ProprioSecurLandingPage() {
   const lastDraftPayloadRef = useRef("");
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPopupOpen(true), 10000);
+    const timer = setTimeout(() => setIsPopupOpen(true), 7000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -341,7 +341,7 @@ Source: Popup - Parler à un expert maintenant`
                 ProprioSécur accompagne les propriétaires en difficulté avec des solutions rapides, confidentielles et adaptées : achat rapide, achat-rachat et prêt privé immobilier.
               </p>
 
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                 <a
                   href="tel:5146593233"
                   className="rounded-2xl bg-green-500 px-6 py-4 text-center text-base font-semibold text-white shadow-lg transition hover:bg-green-400"
@@ -353,6 +353,12 @@ Source: Popup - Parler à un expert maintenant`
                   className="rounded-2xl border border-white/30 bg-white/10 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white/20"
                 >
                   Analyser ma situation gratuitement
+                </a>
+                <a
+                  href="#contact"
+                  className="rounded-2xl bg-red-600 px-6 py-4 text-center text-base font-bold text-white shadow-lg transition hover:bg-red-700"
+                >
+                  🔴 Voir combien nous pouvons offrir pour votre maison
                 </a>
               </div>
 
