@@ -40,11 +40,20 @@ export default function ProprioSecurLandingPage() {
   
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
+  const hasAutoPopupShownRef = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPopupOpen(true), 7000);
+    if (hasAutoPopupShownRef.current) return;
+
+    const timer = setTimeout(() => {
+      if (!isChatOpen && !isPopupOpen) {
+        setIsPopupOpen(true);
+        hasAutoPopupShownRef.current = true;
+      }
+    }, 7000);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [isChatOpen, isPopupOpen]);
 
 
   useEffect(() => {
@@ -58,7 +67,7 @@ export default function ProprioSecurLandingPage() {
     const nom = chatNom.trim();
     const adresse = chatAdresse.trim();
 
-    if (!email && !telephone) {
+    if (!nom && !email && !telephone && !adresse) {
       setDraftStatus("idle");
       return;
     }
@@ -117,7 +126,7 @@ Source: Brouillon automatique - Popup expert`
     const nom = mainNom.trim();
     const adresse = mainAdresse.trim();
 
-    if (!email && !telephone) {
+    if (!nom && !email && !telephone && !adresse) {
       setMainDraftStatus("idle");
       return;
     }
@@ -1871,7 +1880,7 @@ Source: Popup - Parler à un expert maintenant`
                       }}
                       placeholder="Votre nom complet"
                       className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
-                        chatErrors.email
+                        chatErrors.nom
                           ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
                           : "border-slate-300 focus:border-red-600 focus:ring-red-100"
                       }`}
@@ -1891,7 +1900,7 @@ Source: Popup - Parler à un expert maintenant`
                       }}
                       placeholder="votre@courriel.com"
                       className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
-                        chatErrors.telephone
+                        chatErrors.email
                           ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
                           : "border-slate-300 focus:border-red-600 focus:ring-red-100"
                       }`}
@@ -1911,7 +1920,7 @@ Source: Popup - Parler à un expert maintenant`
                       }}
                       placeholder="514-659-3233"
                       className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
-                        chatErrors.adresse
+                        chatErrors.telephone
                           ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
                           : "border-slate-300 focus:border-red-600 focus:ring-red-100"
                       }`}
@@ -1930,7 +1939,11 @@ Source: Popup - Parler à un expert maintenant`
                         if (chatErrors.adresse) setChatErrors((prev) => ({ ...prev, adresse: false }));
                       }}
                       placeholder="Adresse complète de la propriété"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        chatErrors.adresse
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
