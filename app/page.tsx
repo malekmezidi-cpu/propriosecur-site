@@ -31,6 +31,12 @@ export default function ProprioSecurLandingPage() {
   const [chatTelephone, setChatTelephone] = useState("");
   const [chatAdresse, setChatAdresse] = useState("");
   const [isChatSubmitting, setIsChatSubmitting] = useState(false);
+  const [chatErrors, setChatErrors] = useState({
+    nom: false,
+    email: false,
+    telephone: false,
+    adresse: false,
+  });
   
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
@@ -255,8 +261,28 @@ ${details.join("\n")}`
     }
   };
 
+  const validateChatForm = () => {
+    const emailValue = chatEmail.trim();
+    const phoneDigits = chatTelephone.split("").filter((char) => "0123456789".includes(char)).join("");
+
+    const newErrors = {
+      nom: chatNom.trim() === "",
+      email: !emailValue.includes("@") || !emailValue.includes("."),
+      telephone: phoneDigits.length < 10,
+      adresse: chatAdresse.trim() === "",
+    };
+
+    setChatErrors(newErrors);
+    return !Object.values(newErrors).some(Boolean);
+  };
+
   const handleChatSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateChatForm()) {
+      return;
+    }
+
     setIsChatSubmitting(true);
 
     try {
@@ -294,6 +320,7 @@ Source: Popup - Parler à un expert maintenant`
         setChatEmail("");
         setChatTelephone("");
         setChatAdresse("");
+        setChatErrors({ nom: false, email: false, telephone: false, adresse: false });
         setDraftStatus("idle");
         lastDraftPayloadRef.current = "";
         setIsChatOpen(false);
@@ -555,7 +582,11 @@ Source: Popup - Parler à un expert maintenant`
                       onChange={(e) => setMainMessage(e.target.value)}
                       rows={4}
                       placeholder="Expliquez brièvement votre situation"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        chatErrors.nom
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -1834,9 +1865,16 @@ Source: Popup - Parler à un expert maintenant`
                       type="text"
                       name="nom"
                       value={chatNom}
-                      onChange={(e) => setChatNom(e.target.value)}
+                      onChange={(e) => {
+                        setChatNom(e.target.value);
+                        if (chatErrors.nom) setChatErrors((prev) => ({ ...prev, nom: false }));
+                      }}
                       placeholder="Votre nom complet"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        chatErrors.email
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -1847,9 +1885,16 @@ Source: Popup - Parler à un expert maintenant`
                       type="email"
                       name="email"
                       value={chatEmail}
-                      onChange={(e) => setChatEmail(e.target.value)}
+                      onChange={(e) => {
+                        setChatEmail(e.target.value);
+                        if (chatErrors.email) setChatErrors((prev) => ({ ...prev, email: false }));
+                      }}
                       placeholder="votre@courriel.com"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        chatErrors.telephone
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -1860,9 +1905,16 @@ Source: Popup - Parler à un expert maintenant`
                       type="tel"
                       name="telephone"
                       value={chatTelephone}
-                      onChange={(e) => setChatTelephone(e.target.value)}
+                      onChange={(e) => {
+                        setChatTelephone(e.target.value);
+                        if (chatErrors.telephone) setChatErrors((prev) => ({ ...prev, telephone: false }));
+                      }}
                       placeholder="514-659-3233"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        chatErrors.adresse
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-red-600 focus:ring-red-100"
+                      }`}
                     />
                   </div>
 
@@ -1873,7 +1925,10 @@ Source: Popup - Parler à un expert maintenant`
                       type="text"
                       name="adresse_propriete"
                       value={chatAdresse}
-                      onChange={(e) => setChatAdresse(e.target.value)}
+                      onChange={(e) => {
+                        setChatAdresse(e.target.value);
+                        if (chatErrors.adresse) setChatErrors((prev) => ({ ...prev, adresse: false }));
+                      }}
                       placeholder="Adresse complète de la propriété"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
@@ -1890,6 +1945,12 @@ Source: Popup - Parler à un expert maintenant`
                   >
                     {isChatSubmitting ? "Envoi en cours..." : "Accéder au chat"}
                   </button>
+
+                  {Object.values(chatErrors).some(Boolean) && (
+                    <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                      Veuillez compléter tous les champs obligatoires en rouge avant d’accéder au chat.
+                    </p>
+                  )}
 
                   <p className="text-center text-xs text-slate-500">
                     Les champs marqués d’un astérisque sont obligatoires.
