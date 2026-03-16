@@ -424,7 +424,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={mainNom}
                       onChange={(e) => setMainNom(e.target.value)}
                       placeholder="Votre nom"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
@@ -437,7 +437,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={mainEmail}
                       onChange={(e) => setMainEmail(e.target.value)}
                       placeholder="votre@courriel.com"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
@@ -450,7 +450,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={mainTelephone}
                       onChange={(e) => setMainTelephone(e.target.value)}
                       placeholder="514-659-3233"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
@@ -463,7 +463,7 @@ Source: Popup - Parler à un expert maintenant`
                       value={mainAdresse}
                       onChange={(e) => setMainAdresse(e.target.value)}
                       placeholder="Adresse complète de la propriété"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
@@ -474,7 +474,7 @@ Source: Popup - Parler à un expert maintenant`
                       name="situation"
                       value={mainSituation}
                       onChange={(e) => setMainSituation(e.target.value)}
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100">
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
                       <option>Choisir une option</option>
                       <option>Avis de 60 jours</option>
                       <option>Prêt privé immobilier</option>
@@ -493,7 +493,7 @@ Source: Popup - Parler à un expert maintenant`
                       onChange={(e) => setMainMessage(e.target.value)}
                       rows={4}
                       placeholder="Expliquez brièvement votre situation"
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                     />
                   </div>
 
