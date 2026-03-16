@@ -171,12 +171,9 @@ Source: Brouillon automatique - Formulaire principal`
     ].filter(Boolean);
 
     setMainMessage(
-      details.length > 0
-        ? `Demande d’estimation rapide
-
-${details.join("
-")}`
-        : "Demande d’estimation rapide (estimation)"
+setMainMessage(
+  details.length > 0
+    ? `Demande d’est
     );
 
     const contactSection = document.getElementById("contact");
