@@ -179,7 +179,9 @@ Source: Brouillon automatique - Formulaire principal`
 
     setMainMessage(
       details.length > 0
-        ? `Demande d
+        ? `Demande d'estimation rapide
+
+${details.join("\n")}`
         : "Demande d'estimation rapide (estimation)"
     );
 
