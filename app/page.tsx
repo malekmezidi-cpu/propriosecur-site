@@ -355,7 +355,7 @@ Source: Popup - Parler à un expert maintenant`
                   Analyser ma situation gratuitement
                 </a>
                 <a
-                  href="#contact"
+                  href="#offre-rapide"
                   className="rounded-2xl bg-red-600 px-6 py-4 text-center text-base font-bold text-white shadow-lg transition hover:bg-red-700"
                 >
                   🔴 Voir combien nous pouvons offrir pour votre maison
@@ -484,6 +484,60 @@ Source: Popup - Parler à un expert maintenant`
                     Service confidentiel. Aucune obligation.
                   </p>
                 </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white py-20" id="offre-rapide">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="rounded-[2rem] border border-red-200 bg-gradient-to-br from-red-50 to-white p-8 shadow-sm md:p-10">
+              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-red-600">Offre rapide</div>
+              <h2 className="mt-3 text-3xl font-bold md:text-5xl">Voir combien nous pouvons offrir pour votre maison</h2>
+              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+                Donnez quelques informations de base pour obtenir une première idée rapide de l’offre possible selon votre situation.
+              </p>
+
+              <div className="mt-10 grid gap-4 md:grid-cols-2">
+                <input
+                  type="text"
+                  placeholder="Adresse de la propriété"
+                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                />
+                <select className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
+                  <option>Type de propriété</option>
+                  <option>Maison unifamiliale</option>
+                  <option>Duplex</option>
+                  <option>Triplex</option>
+                  <option>Condo</option>
+                  <option>Autre</option>
+                </select>
+                <select className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
+                  <option>État de la propriété</option>
+                  <option>Bon état</option>
+                  <option>Travaux légers</option>
+                  <option>Travaux importants</option>
+                  <option>À rénover complètement</option>
+                </select>
+                <select className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
+                  <option>Délai souhaité</option>
+                  <option>Immédiatement</option>
+                  <option>Dans 30 jours</option>
+                  <option>Dans 60 jours</option>
+                  <option>Plus de 60 jours</option>
+                </select>
+              </div>
+
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <a
+                  href="#contact"
+                  className="inline-flex justify-center rounded-2xl bg-red-600 px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-red-700"
+                >
+                  Recevoir mon estimation rapide
+                </a>
+                <div className="text-sm text-slate-600">
+                  Estimation gratuite et confidentielle. Aucune obligation.
+                </div>
               </div>
             </div>
           </div>
