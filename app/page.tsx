@@ -13,6 +13,10 @@ export default function ProprioSecurLandingPage() {
   const [mainSituation, setMainSituation] = useState("Choisir une option");
   const [mainMessage, setMainMessage] = useState("");
   const [isMainSubmitting, setIsMainSubmitting] = useState(false);
+  const [offerAdresse, setOfferAdresse] = useState("");
+  const [offerType, setOfferType] = useState("Type de propriété");
+  const [offerEtat, setOfferEtat] = useState("État de la propriété");
+  const [offerDelai, setOfferDelai] = useState("Délai souhaité");
   const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastMainDraftPayloadRef = useRef("");
   const [chatNom, setChatNom] = useState("");
@@ -155,6 +159,30 @@ Source: Brouillon automatique - Formulaire principal`
 
     return () => clearTimeout(timer);
   }, [mainNom, mainEmail, mainTelephone, mainAdresse, mainSituation, mainMessage]);
+
+  const handleOfferEstimateClick = () => {
+    setMainAdresse(offerAdresse);
+    setMainSituation("Propriété à vendre rapidement");
+
+    const details = [
+      offerType !== "Type de propriété" ? `Type de propriété : ${offerType}` : "",
+      offerEtat !== "État de la propriété" ? `État de la propriété : ${offerEtat}` : "",
+      offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
+    ].filter(Boolean);
+
+    setMainMessage(
+      details.length > 0
+        ? `Demande d’estimation rapide
+${details.join("
+")}`
+        : "Demande d’estimation rapide"
+    );
+
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   const handleMainSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -501,10 +529,16 @@ Source: Popup - Parler à un expert maintenant`
               <div className="mt-10 grid gap-4 md:grid-cols-2">
                 <input
                   type="text"
+                  value={offerAdresse}
+                  onChange={(e) => setOfferAdresse(e.target.value)}
                   placeholder="Adresse de la propriété"
                   className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
                 />
-                <select className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
+                <select
+                  value={offerType}
+                  onChange={(e) => setOfferType(e.target.value)}
+                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                >
                   <option>Type de propriété</option>
                   <option>Maison unifamiliale</option>
                   <option>Duplex</option>
@@ -512,14 +546,22 @@ Source: Popup - Parler à un expert maintenant`
                   <option>Condo</option>
                   <option>Autre</option>
                 </select>
-                <select className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
+                <select
+                  value={offerEtat}
+                  onChange={(e) => setOfferEtat(e.target.value)}
+                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                >
                   <option>État de la propriété</option>
                   <option>Bon état</option>
                   <option>Travaux légers</option>
                   <option>Travaux importants</option>
                   <option>À rénover complètement</option>
                 </select>
-                <select className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100">
+                <select
+                  value={offerDelai}
+                  onChange={(e) => setOfferDelai(e.target.value)}
+                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+                >
                   <option>Délai souhaité</option>
                   <option>Immédiatement</option>
                   <option>Dans 30 jours</option>
@@ -529,12 +571,13 @@ Source: Popup - Parler à un expert maintenant`
               </div>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <a
-                  href="#contact"
+                <button
+                  type="button"
+                  onClick={handleOfferEstimateClick}
                   className="inline-flex justify-center rounded-2xl bg-red-600 px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-red-700"
                 >
                   Recevoir mon estimation rapide
-                </a>
+                </button>
                 <div className="text-sm text-slate-600">
                   Estimation gratuite et confidentielle. Aucune obligation.
                 </div>
