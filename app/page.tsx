@@ -24,6 +24,11 @@ export default function ProprioSecurLandingPage() {
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
 
+  useEffect(() => {
+    const timer = setTimeout(() => setIsPopupOpen(true), 7000);
+    return () => clearTimeout(timer);
+  }, []);
+
 
   useEffect(() => {
     if (!isChatOpen) {
