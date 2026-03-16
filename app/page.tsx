@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyDsu7V4Uk52slzyLNTk0OyWBj2032YrteA";
 
 export default function ProprioSecurLandingPage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -16,8 +15,6 @@ export default function ProprioSecurLandingPage() {
   const [isMainSubmitting, setIsMainSubmitting] = useState(false);
   const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastMainDraftPayloadRef = useRef("");
-  const mainAddressInputRef = useRef<HTMLInputElement | null>(null);
-  const mainAutocompleteRef = useRef<any>(null);
   const [chatNom, setChatNom] = useState("");
   const [chatEmail, setChatEmail] = useState("");
   const [chatTelephone, setChatTelephone] = useState("");
@@ -26,106 +23,6 @@ export default function ProprioSecurLandingPage() {
   
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const lastDraftPayloadRef = useRef("");
-  const chatAddressInputRef = useRef<HTMLInputElement | null>(null);
-  const chatAutocompleteRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!GOOGLE_MAPS_API_KEY) return;
-
-    let retryTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const addAutocompleteDropdownStyle = () => {
-      if (document.getElementById("google-autocomplete-zindex")) return;
-      const style = document.createElement("style");
-      style.id = "google-autocomplete-zindex";
-      style.innerHTML = ".pac-container{z-index:99999 !important;}";
-      document.head.appendChild(style);
-    };
-
-    const attachAutocomplete = (
-      input: HTMLInputElement | null,
-      autocompleteRef: React.MutableRefObject<any>,
-      setValue: (value: string) => void
-    ) => {
-      const googleMaps = (window as any).google?.maps;
-      if (!googleMaps?.places?.Autocomplete || !input) return false;
-      if (autocompleteRef.current) return true;
-
-      const autocomplete = new googleMaps.places.Autocomplete(input, {
-        types: ["address"],
-        componentRestrictions: { country: "ca" },
-        fields: ["formatted_address", "address_components", "geometry"],
-      });
-
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        const formattedAddress = place?.formatted_address || input.value || "";
-        setValue(formattedAddress);
-      });
-
-      autocompleteRef.current = autocomplete;
-      return true;
-    };
-
-    const initializeAutocomplete = () => {
-      addAutocompleteDropdownStyle();
-      const mainReady = attachAutocomplete(
-        mainAddressInputRef.current,
-        mainAutocompleteRef,
-        setMainAdresse
-      );
-
-      const chatReady = !isChatOpen
-        ? true
-        : attachAutocomplete(
-            chatAddressInputRef.current,
-            chatAutocompleteRef,
-            setChatAdresse
-          );
-
-      return mainReady && chatReady;
-    };
-
-    const waitForGoogleMaps = () => {
-      const ready = initializeAutocomplete();
-      if (ready) return;
-      retryTimer = setTimeout(waitForGoogleMaps, 400);
-    };
-
-    const existingScript = document.querySelector(
-      'script[data-google-maps-autocomplete="true"]'
-    ) as HTMLScriptElement | null;
-
-    if ((window as any).google?.maps?.places?.Autocomplete) {
-      waitForGoogleMaps();
-      return () => {
-        if (retryTimer) clearTimeout(retryTimer);
-      };
-    }
-
-    if (existingScript) {
-      existingScript.addEventListener("load", waitForGoogleMaps);
-      waitForGoogleMaps();
-      return () => {
-        existingScript.removeEventListener("load", waitForGoogleMaps);
-        if (retryTimer) clearTimeout(retryTimer);
-      };
-    }
-
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
-    script.async = true;
-    script.defer = true;
-    script.dataset.googleMapsAutocomplete = "true";
-    script.addEventListener("load", waitForGoogleMaps);
-    document.head.appendChild(script);
-
-    return () => {
-      script.removeEventListener("load", waitForGoogleMaps);
-      if (retryTimer) clearTimeout(retryTimer);
-    };
-  }, [isChatOpen]);
 
 
   useEffect(() => {
@@ -520,14 +417,12 @@ Source: Popup - Parler à un expert maintenant`
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Adresse de la propriété</label>
                     <input
-                      ref={mainAddressInputRef}
                       required
                       type="text"
                       name="adresse_propriete"
                       value={mainAdresse}
                       onChange={(e) => setMainAdresse(e.target.value)}
                       placeholder="Adresse complète de la propriété"
-                      autoComplete="off"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                     />
                   </div>
@@ -1797,14 +1692,12 @@ Source: Popup - Parler à un expert maintenant`
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">Adresse de la propriété *</label>
                     <input
-                      ref={chatAddressInputRef}
                       required
                       type="text"
                       name="adresse_propriete"
                       value={chatAdresse}
                       onChange={(e) => setChatAdresse(e.target.value)}
                       placeholder="Adresse complète de la propriété"
-                      autoComplete="off"
                       className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
