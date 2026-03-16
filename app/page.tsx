@@ -164,17 +164,20 @@ Source: Brouillon automatique - Formulaire principal`
     setMainAdresse(offerAdresse);
     setMainSituation("Propriété à vendre rapidement");
 
-    const details = [
-      offerType !== "Type de propriété" ? `Type de propriété : ${offerType}` : "",
-      offerEtat !== "État de la propriété" ? `État de la propriété : ${offerEtat}` : "",
-      offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
-    ].filter(Boolean);
+const details = [
+  offerType !== "Type de propriété" ? `Type de propriété : ${offerType}` : "",
+  offerEtat !== "État de la propriété" ? `État de la propriété : ${offerEtat}` : "",
+  offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
+].filter(Boolean);
 
-   setMainMessage(
-  details.length > 0
-    ? `Demande d’estimation rapide
+setMainMessage(
+
+setMainMessage(
+details.length > 0
+? `Demande d’estimation rapide
+
 ${details.join("\n")}`
-    : "Demande d’estimation rapide (estimation)"
+: "Demande d’estimation rapide (estimation)"
 );
 
     const contactSection = document.getElementById("contact");
