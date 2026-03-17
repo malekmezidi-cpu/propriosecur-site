@@ -29,6 +29,7 @@ export default function ProprioSecurLandingPage() {
   const [offerEtat, setOfferEtat] = useState("État de la propriété");
   const [offerDelai, setOfferDelai] = useState("Délai souhaité");
   const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [mainSubmitFeedback, setMainSubmitFeedback] = useState("");
   const lastMainDraftPayloadRef = useRef("");
   const [chatNom, setChatNom] = useState("");
   const [chatEmail, setChatEmail] = useState("");
@@ -43,6 +44,7 @@ export default function ProprioSecurLandingPage() {
   });
   
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [chatSubmitFeedback, setChatSubmitFeedback] = useState("");
   const lastDraftPayloadRef = useRef("");
   const hasAutoPopupShownRef = useRef(false);
 
@@ -115,6 +117,7 @@ Source: Brouillon automatique - Popup expert`
           lastDraftPayloadRef.current = payloadKey;
           setDraftStatus("saved");
         } else {
+          console.error("Formspree draft popup error", response.status, await response.text());
           setDraftStatus("error");
         }
       } catch {
@@ -178,6 +181,7 @@ Source: Brouillon automatique - Formulaire principal`
           lastMainDraftPayloadRef.current = payloadKey;
           setMainDraftStatus("saved");
         } else {
+          console.error("Formspree draft main error", response.status, await response.text());
           setMainDraftStatus("error");
         }
       } catch {
@@ -232,9 +236,11 @@ ${details.join("\n")}`
     e.preventDefault();
 
     if (!validateMainForm()) {
+      setMainSubmitFeedback("Veuillez corriger les champs en rouge.");
       return;
     }
 
+    setMainSubmitFeedback("");
     setIsMainSubmitting(true);
 
     try {
@@ -257,20 +263,24 @@ ${details.join("\n")}`
       });
 
       if (response.ok) {
-        alert("Merci. Votre demande a bien été envoyée.");
+        setMainSubmitFeedback("Merci. Votre demande a bien été envoyée.");
         setMainNom("");
         setMainEmail("");
         setMainTelephone("");
         setMainAdresse("");
         setMainSituation("Choisir une option");
         setMainMessage("");
+        setMainErrors({ nom: false, email: false, telephone: false, adresse: false, situation: false });
         setMainDraftStatus("idle");
         lastMainDraftPayloadRef.current = "";
       } else {
-        alert("Une erreur est survenue. Veuillez réessayer.");
+        const errorText = await response.text();
+        console.error("Formspree main submit error", response.status, errorText);
+        setMainSubmitFeedback(`Erreur Formspree (${response.status}). Vérifiez la configuration du formulaire.`);
       }
-    } catch {
-      alert("Une erreur est survenue. Veuillez réessayer.");
+    } catch (error) {
+      console.error("Main submit fetch error", error);
+      setMainSubmitFeedback("Erreur réseau lors de l’envoi. Veuillez réessayer.");
     } finally {
       setIsMainSubmitting(false);
     }
@@ -295,9 +305,11 @@ ${details.join("\n")}`
     e.preventDefault();
 
     if (!validateChatForm()) {
+      setChatSubmitFeedback("Veuillez corriger les champs en rouge.");
       return;
     }
 
+    setChatSubmitFeedback("");
     setIsChatSubmitting(true);
 
     try {
@@ -330,7 +342,7 @@ Source: Popup - Parler à un expert maintenant`
       });
 
       if (response.ok) {
-        alert("Merci. Votre demande a bien été envoyée.");
+        setChatSubmitFeedback("Merci. Votre demande a bien été envoyée.");
         setChatNom("");
         setChatEmail("");
         setChatTelephone("");
@@ -340,10 +352,13 @@ Source: Popup - Parler à un expert maintenant`
         lastDraftPayloadRef.current = "";
         setIsChatOpen(false);
       } else {
-        alert("Une erreur est survenue. Veuillez réessayer.");
+        const errorText = await response.text();
+        console.error("Formspree chat submit error", response.status, errorText);
+        setChatSubmitFeedback(`Erreur Formspree (${response.status}). Vérifiez la configuration du formulaire.`);
       }
-    } catch {
-      alert("Une erreur est survenue. Veuillez réessayer.");
+    } catch (error) {
+      console.error("Chat submit fetch error", error);
+      setChatSubmitFeedback("Erreur réseau lors de l’envoi. Veuillez réessayer.");
     } finally {
       setIsChatSubmitting(false);
     }
@@ -621,6 +636,23 @@ Source: Popup - Parler à un expert maintenant`
                     <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                       Veuillez compléter tous les champs obligatoires en rouge avant d’envoyer votre demande.
                     </p>
+                  )}
+
+                  {mainSubmitFeedback && (
+                    <p className={`rounded-xl px-4 py-3 text-sm font-medium ${
+                      mainSubmitFeedback.startsWith("Merci")
+                        ? "border border-green-200 bg-green-50 text-green-700"
+                        : "border border-red-200 bg-red-50 text-red-700"
+                    }`}>
+                      {mainSubmitFeedback}
+                    </p>
+                  )}
+
+                  {mainDraftStatus === "saved" && (
+                    <p className="text-center text-xs text-slate-500">Brouillon automatique sauvegardé.</p>
+                  )}
+                  {mainDraftStatus === "error" && (
+                    <p className="text-center text-xs text-red-600">Erreur de brouillon automatique.</p>
                   )}
 
                   <p className="text-center text-xs text-slate-500">
@@ -1969,6 +2001,23 @@ Source: Popup - Parler à un expert maintenant`
                     <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                       Veuillez compléter tous les champs obligatoires en rouge avant d’accéder au chat.
                     </p>
+                  )}
+
+                  {chatSubmitFeedback && (
+                    <p className={`rounded-xl px-4 py-3 text-sm font-medium ${
+                      chatSubmitFeedback.startsWith("Merci")
+                        ? "border border-green-200 bg-green-50 text-green-700"
+                        : "border border-red-200 bg-red-50 text-red-700"
+                    }`}>
+                      {chatSubmitFeedback}
+                    </p>
+                  )}
+
+                  {draftStatus === "saved" && (
+                    <p className="text-center text-xs text-slate-500">Brouillon automatique sauvegardé.</p>
+                  )}
+                  {draftStatus === "error" && (
+                    <p className="text-center text-xs text-red-600">Erreur de brouillon automatique.</p>
                   )}
 
                   <p className="text-center text-xs text-slate-500">
