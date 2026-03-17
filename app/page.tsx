@@ -182,13 +182,13 @@ ${mainMessage || "Aucun message"}`);
     ].filter(Boolean);
 
     setMainMessage(
-  details.length > 0
-    ? `Demande d'estimation rapide
+      details.length > 0
+        ? `Demande d'estimation rapide
 
 ${details.join("
 ")}`
-    : "Demande d'estimation rapide (estimation)"
-);
+        : "Demande d'estimation rapide (estimation)"
+    );
 
     const contactSection = document.getElementById("contact");
     if (contactSection) {
