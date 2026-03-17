@@ -57,7 +57,7 @@ export default function ProprioSecurLandingPage() {
         setIsPopupOpen(true);
         hasAutoPopupShownRef.current = true;
       }
-    }, 7000);
+    }, 10000);
 
     return () => clearTimeout(timer);
   }, [isChatOpen, isPopupOpen]);
@@ -432,7 +432,7 @@ Source: Popup - Parler à un expert maintenant`
                 </a>
                 <a
                   href="#contact"
-                  className="rounded-2xl border border-white/30 bg-white/10 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white/20"
+                  className="rounded-2xl border border-red-500 bg-red-600 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-red-700"
                 >
                   Analyser ma situation gratuitement
                 </a>
