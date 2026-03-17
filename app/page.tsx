@@ -432,7 +432,7 @@ Source: Popup - Parler à un expert maintenant`
                 </a>
                 <a
                   href="#contact"
-                  className="rounded-2xl border border-red-500 bg-red-600 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-red-700"
+                  className="inline-flex items-center justify-center rounded-2xl border border-red-500 bg-gradient-to-r from-red-600 to-red-500 px-6 py-4 text-center text-base font-bold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:from-red-700 hover:to-red-600 hover:shadow-xl animate-[pulse_2.5s_ease-in-out_infinite] shadow-[0_0_0_rgba(239,68,68,0.7)] hover:shadow-[0_0_25px_rgba(239,68,68,0.9)]"
                 >
                   Analyser ma situation gratuitement
                 </a>
