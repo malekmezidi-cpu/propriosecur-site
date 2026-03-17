@@ -185,8 +185,7 @@ ${mainMessage || "Aucun message"}`);
       details.length > 0
         ? `Demande d'estimation rapide
 
-${details.join("
-")}`
+${details.join("\n")}`
         : "Demande d'estimation rapide (estimation)"
     );
 
