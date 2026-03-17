@@ -7,9 +7,11 @@ export default function ProprioSecurLandingPage() {
     const email = value.trim();
     return email.includes("@") && email.includes(".");
   };
+
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const [mainNom, setMainNom] = useState("");
   const [mainEmail, setMainEmail] = useState("");
   const [mainTelephone, setMainTelephone] = useState("");
@@ -24,13 +26,14 @@ export default function ProprioSecurLandingPage() {
     adresse: false,
     situation: false,
   });
+  const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const lastMainDraftPayloadRef = useRef("");
+
   const [offerAdresse, setOfferAdresse] = useState("");
   const [offerType, setOfferType] = useState("Type de propriété");
   const [offerEtat, setOfferEtat] = useState("État de la propriété");
   const [offerDelai, setOfferDelai] = useState("Délai souhaité");
-  const [mainDraftStatus, setMainDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [mainSubmitFeedback, setMainSubmitFeedback] = useState("");
-  const lastMainDraftPayloadRef = useRef("");
+
   const [chatNom, setChatNom] = useState("");
   const [chatEmail, setChatEmail] = useState("");
   const [chatTelephone, setChatTelephone] = useState("");
@@ -42,9 +45,7 @@ export default function ProprioSecurLandingPage() {
     telephone: false,
     adresse: false,
   });
-  
   const [draftStatus, setDraftStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [chatSubmitFeedback, setChatSubmitFeedback] = useState("");
   const lastDraftPayloadRef = useRef("");
   const hasAutoPopupShownRef = useRef(false);
 
@@ -61,16 +62,12 @@ export default function ProprioSecurLandingPage() {
     return () => clearTimeout(timer);
   }, [isChatOpen, isPopupOpen]);
 
-
   useEffect(() => {
-    if (!isChatOpen) {
-      setDraftStatus("idle");
-      return;
-    }
+    if (!isChatOpen) return;
 
+    const nom = chatNom.trim();
     const email = chatEmail.trim();
     const telephone = chatTelephone.trim();
-    const nom = chatNom.trim();
     const adresse = chatAdresse.trim();
     const emailIsValid = isValidEmail(email);
 
@@ -79,33 +76,27 @@ export default function ProprioSecurLandingPage() {
       return;
     }
 
-    const payloadKey = JSON.stringify({ nom, email, telephone, adresse });
-    if (payloadKey === lastDraftPayloadRef.current) {
-      return;
-    }
+    const payloadKey = JSON.stringify({ nom, email, telephone, adresse, source: "Popup - brouillon" });
+    if (payloadKey === lastDraftPayloadRef.current) return;
+
+    setDraftStatus("saving");
 
     const timer = setTimeout(async () => {
       try {
-        setDraftStatus("saving");
-
         const formData = new FormData();
-        formData.append("nom", nom || "Brouillon sans nom");
+        formData.append("nom", nom || "Non fourni");
         formData.append("email", email);
         formData.append("telephone", telephone || "Non fourni");
         formData.append("adresse_propriete", adresse || "Non fournie");
+        formData.append("source", "Popup - brouillon automatique");
         formData.append(
           "message",
-          `Brouillon sauvegardé automatiquement
+          `Brouillon automatique popup
 Nom: ${nom || "Non fourni"}
 Courriel: ${email}
 Téléphone: ${telephone || "Non fourni"}
-Adresse de la propriété: ${adresse || "Non fournie"}
-Source: Brouillon automatique - Popup expert`
+Adresse: ${adresse || "Non fournie"}`
         );
-        formData.append("_subject", "Nouveau brouillon automatique - Popup expert");
-        formData.append("_captcha", "false");
-        formData.append("_template", "table");
-        formData.append("source", "Brouillon automatique - Popup expert");
 
         const response = await fetch("https://formspree.io/f/mzdjdpvk", {
           method: "POST",
@@ -120,7 +111,8 @@ Source: Brouillon automatique - Popup expert`
           console.error("Formspree draft popup error", response.status, await response.text());
           setDraftStatus("error");
         }
-      } catch {
+      } catch (error) {
+        console.error("Popup draft fetch error", error);
         setDraftStatus("error");
       }
     }, 4000);
@@ -129,9 +121,9 @@ Source: Brouillon automatique - Popup expert`
   }, [isChatOpen, chatNom, chatEmail, chatTelephone, chatAdresse]);
 
   useEffect(() => {
+    const nom = mainNom.trim();
     const email = mainEmail.trim();
     const telephone = mainTelephone.trim();
-    const nom = mainNom.trim();
     const adresse = mainAdresse.trim();
     const emailIsValid = isValidEmail(email);
 
@@ -140,36 +132,22 @@ Source: Brouillon automatique - Popup expert`
       return;
     }
 
-    const payloadKey = JSON.stringify({ nom, email, telephone, adresse, situation: mainSituation, message: mainMessage });
-    if (payloadKey === lastMainDraftPayloadRef.current) {
-      return;
-    }
+    const payloadKey = JSON.stringify({ nom, email, telephone, adresse, situation: mainSituation, source: "Formulaire principal - brouillon" });
+    if (payloadKey === lastMainDraftPayloadRef.current) return;
+
+    setMainDraftStatus("saving");
 
     const timer = setTimeout(async () => {
       try {
-        setMainDraftStatus("saving");
-
         const formData = new FormData();
-        formData.append("nom", nom || "Brouillon sans nom");
+        formData.append("nom", nom || "Non fourni");
         formData.append("email", email);
         formData.append("telephone", telephone || "Non fourni");
         formData.append("adresse_propriete", adresse || "Non fournie");
-        formData.append("situation", mainSituation || "Non fournie");
-        formData.append(
-          "message",
-          `Brouillon sauvegardé automatiquement
-Nom: ${nom || "Non fourni"}
-Courriel: ${email}
-Téléphone: ${telephone || "Non fourni"}
-Adresse de la propriété: ${adresse || "Non fournie"}
-Situation: ${mainSituation || "Non fournie"}
-Message: ${mainMessage || "Non fourni"}
-Source: Brouillon automatique - Formulaire principal`
-        );
-        formData.append("_subject", "Nouveau brouillon automatique - Formulaire principal");
-        formData.append("_captcha", "false");
-        formData.append("_template", "table");
-        formData.append("source", "Brouillon automatique - Formulaire principal");
+        formData.append("situation", mainSituation || "Non précisée");
+        formData.append("message", `Brouillon automatique formulaire principal
+${mainMessage || "Aucun message"}`);
+        formData.append("source", "Formulaire principal - brouillon automatique");
 
         const response = await fetch("https://formspree.io/f/mzdjdpvk", {
           method: "POST",
@@ -184,7 +162,8 @@ Source: Brouillon automatique - Formulaire principal`
           console.error("Formspree draft main error", response.status, await response.text());
           setMainDraftStatus("error");
         }
-      } catch {
+      } catch (error) {
+        console.error("Main draft fetch error", error);
         setMainDraftStatus("error");
       }
     }, 4000);
@@ -206,7 +185,8 @@ Source: Brouillon automatique - Formulaire principal`
       details.length > 0
         ? `Demande d'estimation rapide
 
-${details.join("\n")}`
+${details.join("
+")}`
         : "Demande d'estimation rapide (estimation)"
     );
 
@@ -236,11 +216,9 @@ ${details.join("\n")}`
     e.preventDefault();
 
     if (!validateMainForm()) {
-      setMainSubmitFeedback("Veuillez corriger les champs en rouge.");
       return;
     }
 
-    setMainSubmitFeedback("");
     setIsMainSubmitting(true);
 
     try {
@@ -250,10 +228,7 @@ ${details.join("\n")}`
       formData.append("telephone", mainTelephone);
       formData.append("adresse_propriete", mainAdresse);
       formData.append("situation", mainSituation);
-      formData.append("message", mainMessage);
-      formData.append("_subject", "Nouvelle demande - Formulaire principal ProprioSécur");
-      formData.append("_captcha", "false");
-      formData.append("_template", "table");
+      formData.append("message", mainMessage || "Aucun message");
       formData.append("source", "Formulaire principal");
 
       const response = await fetch("https://formspree.io/f/mzdjdpvk", {
@@ -263,7 +238,6 @@ ${details.join("\n")}`
       });
 
       if (response.ok) {
-        setMainSubmitFeedback("");
         alert("Merci. Votre demande a bien été envoyée.");
         setMainNom("");
         setMainEmail("");
@@ -277,12 +251,10 @@ ${details.join("\n")}`
       } else {
         const errorText = await response.text();
         console.error("Formspree main submit error", response.status, errorText);
-        setMainSubmitFeedback("");
         alert(`Erreur Formspree (${response.status}). Vérifiez la configuration du formulaire.`);
       }
     } catch (error) {
       console.error("Main submit fetch error", error);
-      setMainSubmitFeedback("");
       alert("Erreur réseau lors de l’envoi. Veuillez réessayer.");
     } finally {
       setIsMainSubmitting(false);
@@ -308,11 +280,9 @@ ${details.join("\n")}`
     e.preventDefault();
 
     if (!validateChatForm()) {
-      setChatSubmitFeedback("Veuillez corriger les champs en rouge.");
       return;
     }
 
-    setChatSubmitFeedback("");
     setIsChatSubmitting(true);
 
     try {
@@ -327,16 +297,13 @@ ${details.join("\n")}`
       formData.append("email", email);
       formData.append("telephone", telephone);
       formData.append("adresse_propriete", adresse);
+      formData.append("source", "Popup - Parler à un expert");
       formData.append(
         "message",
         `Téléphone: ${telephone}
 Adresse de la propriété: ${adresse}
 Source: Popup - Parler à un expert maintenant`
       );
-      formData.append("_subject", "Nouvelle demande - Parler à un expert");
-      formData.append("_captcha", "false");
-      formData.append("_template", "table");
-      formData.append("source", "Popup - Parler à un expert");
 
       const response = await fetch("https://formspree.io/f/mzdjdpvk", {
         method: "POST",
@@ -345,7 +312,6 @@ Source: Popup - Parler à un expert maintenant`
       });
 
       if (response.ok) {
-        setChatSubmitFeedback("");
         alert("Merci. Votre demande a bien été envoyée.");
         setChatNom("");
         setChatEmail("");
@@ -358,12 +324,10 @@ Source: Popup - Parler à un expert maintenant`
       } else {
         const errorText = await response.text();
         console.error("Formspree chat submit error", response.status, errorText);
-        setChatSubmitFeedback("");
         alert(`Erreur Formspree (${response.status}). Vérifiez la configuration du formulaire.`);
       }
     } catch (error) {
       console.error("Chat submit fetch error", error);
-      setChatSubmitFeedback("");
       alert("Erreur réseau lors de l’envoi. Veuillez réessayer.");
     } finally {
       setIsChatSubmitting(false);
@@ -472,12 +436,6 @@ Source: Popup - Parler à un expert maintenant`
                   className="rounded-2xl border border-white/30 bg-white/10 px-6 py-4 text-center text-base font-semibold text-white transition hover:bg-white/20"
                 >
                   Analyser ma situation gratuitement
-                </a>
-                <a
-                  href="#offre-rapide"
-                  className="rounded-2xl bg-red-600 px-6 py-4 text-center text-base font-bold text-white shadow-lg transition hover:bg-red-700"
-                >
-                  🔴 Voir combien nous pouvons offrir pour votre maison
                 </a>
               </div>
 
@@ -648,75 +606,6 @@ Source: Popup - Parler à un expert maintenant`
                     Service confidentiel. Aucune obligation.
                   </p>
                 </form>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-20" id="offre-rapide">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="rounded-[2rem] border border-red-200 bg-gradient-to-br from-red-50 to-white p-8 shadow-sm md:p-10">
-              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-red-600">Offre rapide</div>
-              <h2 className="mt-3 text-3xl font-bold md:text-5xl">Voir combien nous pouvons offrir pour votre maison</h2>
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
-                Donnez quelques informations de base pour obtenir une première idée rapide de l’offre possible selon votre situation.
-              </p>
-
-              <div className="mt-10 grid gap-4 md:grid-cols-2">
-                <input
-                  type="text"
-                  value={offerAdresse}
-                  onChange={(e) => setOfferAdresse(e.target.value)}
-                  placeholder="Adresse de la propriété"
-                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
-                />
-                <select
-                  value={offerType}
-                  onChange={(e) => setOfferType(e.target.value)}
-                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
-                >
-                  <option>Type de propriété</option>
-                  <option>Maison unifamiliale</option>
-                  <option>Duplex</option>
-                  <option>Triplex</option>
-                  <option>Condo</option>
-                  <option>Autre</option>
-                </select>
-                <select
-                  value={offerEtat}
-                  onChange={(e) => setOfferEtat(e.target.value)}
-                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
-                >
-                  <option>État de la propriété</option>
-                  <option>Bon état</option>
-                  <option>Travaux légers</option>
-                  <option>Travaux importants</option>
-                  <option>À rénover complètement</option>
-                </select>
-                <select
-                  value={offerDelai}
-                  onChange={(e) => setOfferDelai(e.target.value)}
-                  className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
-                >
-                  <option>Délai souhaité</option>
-                  <option>Immédiatement</option>
-                  <option>Dans 30 jours</option>
-                  <option>Dans 60 jours</option>
-                  <option>Plus de 60 jours</option>
-                </select>
-              </div>
-
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <button
-                  type="button"
-                  onClick={handleOfferEstimateClick}
-                  className="inline-flex justify-center rounded-2xl bg-red-600 px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-red-700"
-                >
-                  Recevoir mon estimation rapide
-                </button>
-                <div className="text-sm text-slate-600">
-                  Estimation gratuite et confidentielle. Aucune obligation.
-                </div>
               </div>
             </div>
           </div>
@@ -940,6 +829,75 @@ Source: Popup - Parler à un expert maintenant`
             >
               Analyser ma situation gratuitement confidentielle
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-20" id="offre-rapide">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="rounded-[2rem] border border-red-200 bg-gradient-to-br from-red-50 to-white p-8 shadow-sm md:p-10">
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-red-600">Analyse rapide</div>
+            <h2 className="mt-3 text-3xl font-bold md:text-5xl">Obtenez une première estimation et explorez vos options</h2>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+              Donnez quelques informations de base pour obtenir rapidement une première estimation et mieux comprendre les solutions possibles selon votre situation.
+            </p>
+
+            <div className="mt-10 grid gap-4 md:grid-cols-2">
+              <input
+                type="text"
+                value={offerAdresse}
+                onChange={(e) => setOfferAdresse(e.target.value)}
+                placeholder="Adresse de la propriété"
+                className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+              />
+              <select
+                value={offerType}
+                onChange={(e) => setOfferType(e.target.value)}
+                className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+              >
+                <option>Type de propriété</option>
+                <option>Maison unifamiliale</option>
+                <option>Duplex</option>
+                <option>Triplex</option>
+                <option>Condo</option>
+                <option>Autre</option>
+              </select>
+              <select
+                value={offerEtat}
+                onChange={(e) => setOfferEtat(e.target.value)}
+                className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+              >
+                <option>État de la propriété</option>
+                <option>Bon état</option>
+                <option>Travaux légers</option>
+                <option>Travaux importants</option>
+                <option>À rénover complètement</option>
+              </select>
+              <select
+                value={offerDelai}
+                onChange={(e) => setOfferDelai(e.target.value)}
+                className="rounded-xl border border-slate-300 px-4 py-4 outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-100"
+              >
+                <option>Délai souhaité</option>
+                <option>Immédiatement</option>
+                <option>Dans 30 jours</option>
+                <option>Dans 60 jours</option>
+                <option>Plus de 60 jours</option>
+              </select>
+            </div>
+
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <button
+                type="button"
+                onClick={handleOfferEstimateClick}
+                className="inline-flex justify-center rounded-2xl bg-red-600 px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-red-700"
+              >
+                Obtenir mon analyse rapide
+              </button>
+              <div className="text-sm text-slate-600">
+                Estimation gratuite et confidentielle. Aucune obligation.
+              </div>
+            </div>
           </div>
         </div>
       </section>
