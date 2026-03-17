@@ -3,6 +3,10 @@ import { useEffect, useRef, useState } from "react";
 
 
 export default function ProprioSecurLandingPage() {
+  const isValidEmail = (value: string) => {
+    const email = value.trim();
+    return email.includes("@") && email.includes(".");
+  };
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -66,8 +70,9 @@ export default function ProprioSecurLandingPage() {
     const telephone = chatTelephone.trim();
     const nom = chatNom.trim();
     const adresse = chatAdresse.trim();
+    const emailIsValid = isValidEmail(email);
 
-    if (!nom && !email && !telephone && !adresse) {
+    if (!emailIsValid) {
       setDraftStatus("idle");
       return;
     }
@@ -83,14 +88,14 @@ export default function ProprioSecurLandingPage() {
 
         const formData = new FormData();
         formData.append("nom", nom || "Brouillon sans nom");
-        formData.append("email", email || "Non fourni");
+        formData.append("email", email);
         formData.append("telephone", telephone || "Non fourni");
         formData.append("adresse_propriete", adresse || "Non fournie");
         formData.append(
           "message",
           `Brouillon sauvegardé automatiquement
 Nom: ${nom || "Non fourni"}
-Courriel: ${email || "Non fourni"}
+Courriel: ${email}
 Téléphone: ${telephone || "Non fourni"}
 Adresse de la propriété: ${adresse || "Non fournie"}
 Source: Brouillon automatique - Popup expert`
@@ -125,8 +130,9 @@ Source: Brouillon automatique - Popup expert`
     const telephone = mainTelephone.trim();
     const nom = mainNom.trim();
     const adresse = mainAdresse.trim();
+    const emailIsValid = isValidEmail(email);
 
-    if (!nom && !email && !telephone && !adresse) {
+    if (!emailIsValid) {
       setMainDraftStatus("idle");
       return;
     }
@@ -142,7 +148,7 @@ Source: Brouillon automatique - Popup expert`
 
         const formData = new FormData();
         formData.append("nom", nom || "Brouillon sans nom");
-        formData.append("email", email || "Non fourni");
+        formData.append("email", email);
         formData.append("telephone", telephone || "Non fourni");
         formData.append("adresse_propriete", adresse || "Non fournie");
         formData.append("situation", mainSituation || "Non fournie");
@@ -150,7 +156,7 @@ Source: Brouillon automatique - Popup expert`
           "message",
           `Brouillon sauvegardé automatiquement
 Nom: ${nom || "Non fourni"}
-Courriel: ${email || "Non fourni"}
+Courriel: ${email}
 Téléphone: ${telephone || "Non fourni"}
 Adresse de la propriété: ${adresse || "Non fournie"}
 Situation: ${mainSituation || "Non fournie"}
