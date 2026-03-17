@@ -185,7 +185,8 @@ ${mainMessage || "Aucun message"}`);
       details.length > 0
         ? `Demande d'estimation rapide
 
-${details.join("\n")}`
+${details.join("
+")}`
         : "Demande d'estimation rapide (estimation)"
     );
 
@@ -432,7 +433,7 @@ Source: Popup - Parler à un expert maintenant`
                 </a>
                 <a
                   href="#contact"
-                  className="inline-flex items-center justify-center rounded-2xl border border-red-500 bg-gradient-to-r from-red-600 to-red-500 px-6 py-4 text-center text-base font-bold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:from-red-700 hover:to-red-600 hover:shadow-xl animate-[pulse_2.5s_ease-in-out_infinite] shadow-[0_0_0_rgba(239,68,68,0.7)] hover:shadow-[0_0_25px_rgba(239,68,68,0.9)]"
+                  className="inline-flex items-center justify-center rounded-2xl border border-red-400 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-6 py-4 text-center text-base font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.35)] transition duration-500 hover:-translate-y-1 hover:from-red-700 hover:via-red-600 hover:to-red-700 hover:shadow-[0_18px_40px_rgba(239,68,68,0.45)] animate-[pulse_3.2s_ease-in-out_infinite]"
                 >
                   Analyser ma situation gratuitement
                 </a>
@@ -1578,7 +1579,7 @@ Source: Popup - Parler à un expert maintenant`
       <button
         type="button"
         onClick={() => setIsChatOpen(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full bg-red-600 px-6 py-4 text-white font-bold shadow-xl hover:bg-red-700"
+        className="fixed bottom-6 right-6 z-50 rounded-full border border-red-400 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-6 py-4 font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.35)] transition duration-500 hover:-translate-y-1 hover:from-red-700 hover:via-red-600 hover:to-red-700 hover:shadow-[0_18px_40px_rgba(239,68,68,0.45)] animate-[pulse_3.2s_ease-in-out_infinite]
       >
         💬 Parler à un expert
       </button>
