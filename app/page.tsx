@@ -690,7 +690,7 @@ Source: Popup - Parler à un expert maintenant`
                 <button
                   type="button"
                   onClick={() => setIsChatOpen(true)}
-                  className="inline-flex rounded-2xl border border-slate-300 bg-white px-6 py-4 text-base font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
+                  className="inline-flex rounded-2xl border border-green-500 bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-4 text-base font-semibold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:from-green-700 hover:to-emerald-600 hover:shadow-xl"
                 >
                   💬 Parler à un expert
                 </button>
@@ -1816,7 +1816,7 @@ Source: Popup - Parler à un expert maintenant`
                     setIsPopupOpen(false);
                     setIsChatOpen(true);
                   }}
-                  className="inline-flex min-w-[260px] justify-center rounded-2xl border border-slate-300 bg-white px-8 py-4 text-base font-bold text-slate-900 shadow-sm transition hover:bg-slate-50"
+                  className="inline-flex min-w-[260px] justify-center rounded-2xl border border-green-500 bg-gradient-to-r from-green-600 to-emerald-500 px-8 py-4 text-base font-bold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:from-green-700 hover:to-emerald-600 hover:shadow-xl"
                 >
                   💬 Parler à un expert
                 </button>
