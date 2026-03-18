@@ -1578,7 +1578,7 @@ Source: Popup - Parler à un expert maintenant`
       <button
         type="button"
         onClick={() => setIsChatOpen(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full border border-red-400 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-6 py-4 font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.35)] transition duration-500 hover:-translate-y-1 hover:from-red-700 hover:via-red-600 hover:to-red-700 hover:shadow-[0_18px_40px_rgba(239,68,68,0.45)] animate-[pulse_3.2s_ease-in-out_infinite]"
+        className="fixed bottom-24 right-6 z-50 rounded-full border border-red-400 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-6 py-4 font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.35)] transition duration-500 hover:-translate-y-1 hover:from-red-700 hover:via-red-600 hover:to-red-700 hover:shadow-[0_18px_40px_rgba(239,68,68,0.45)] animate-[pulse_3.2s_ease-in-out_infinite]"
       >
         💬 Parler à un expert
       </button>
