@@ -1762,22 +1762,22 @@ Source: Popup - Parler à un expert maintenant`
       
 
       {isPopupOpen && !isChatOpen && (
-        <div className="fixed inset-0 z-[55] flex items-end justify-center bg-slate-950/60 p-4 md:items-center backdrop-blur-md">
-          <div className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/20 bg-white shadow-2xl ring-1 ring-slate-200">
+        <div className="fixed inset-0 z-[55] flex items-end justify-center bg-slate-950/60 p-3 md:items-center md:p-4 backdrop-blur-md">
+          <div className="relative max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-white/20 bg-white shadow-2xl ring-1 ring-slate-200 md:max-h-none md:overflow-visible">
             <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-red-600 via-orange-500 to-red-700" />
             <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-red-100/60 blur-3xl" />
             <div className="absolute left-0 top-16 h-32 w-32 rounded-full bg-amber-100/60 blur-3xl" />
 
-            <div className="relative p-8 md:p-10">
+            <div className="relative p-5 sm:p-6 md:p-10">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <div className="inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-700 shadow-sm">
+                  <div className="inline-flex rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-red-700 shadow-sm md:px-4 md:py-2 md:text-xs md:tracking-[0.2em]">
                     Situation urgente
                   </div>
-                  <h3 className="mt-4 max-w-xl text-3xl font-extrabold leading-tight text-slate-900 md:text-4xl">
+                  <h3 className="mt-3 max-w-xl text-2xl font-extrabold leading-tight text-slate-900 sm:text-[2rem] md:mt-4 md:text-4xl">
                     Avez-vous reçu un avis de 60 jours, besoin d’un prêt privé ou souhaitez-vous vendre votre propriété rapidement?
                   </h3>
-                  <p className="mt-4 max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
+                  <p className="mt-3 max-w-2xl text-[15px] leading-7 text-slate-600 md:mt-4 md:text-lg md:leading-8">
                     Nous analysons votre situation gratuitement et en toute confidentialité afin de vous proposer la meilleure solution pour votre propriété.
                   </p>
                 </div>
@@ -1802,11 +1802,11 @@ Source: Popup - Parler à un expert maintenant`
                 ))}
               </div>
 
-              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
                 <a
                   href="#contact"
                   onClick={() => setIsPopupOpen(false)}
-                  className="inline-flex min-w-[260px] justify-center rounded-2xl bg-red-600 px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-red-700"
+                  className="inline-flex w-full justify-center rounded-2xl bg-red-600 px-6 py-4 text-base font-bold text-white shadow-lg transition hover:bg-red-700 sm:min-w-[260px] sm:w-auto"
                 >
                   Analyser ma situation gratuitement
                 </a>
@@ -1816,7 +1816,7 @@ Source: Popup - Parler à un expert maintenant`
                     setIsPopupOpen(false);
                     setIsChatOpen(true);
                   }}
-                  className="inline-flex min-w-[260px] justify-center rounded-2xl border border-green-500 bg-gradient-to-r from-green-600 to-emerald-500 px-8 py-4 text-base font-bold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:from-green-700 hover:to-emerald-600 hover:shadow-xl"
+                  className="inline-flex w-full justify-center rounded-2xl border border-green-500 bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-4 text-base font-bold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:from-green-700 hover:to-emerald-600 hover:shadow-xl sm:min-w-[260px] sm:w-auto"
                 >
                   💬 Parler à un expert
                 </button>
