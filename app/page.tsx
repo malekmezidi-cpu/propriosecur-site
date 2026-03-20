@@ -9,6 +9,7 @@ export default function ProprioSecurLandingPage() {
   };
 
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showFloatingChat, setShowFloatingChat] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -61,6 +62,16 @@ export default function ProprioSecurLandingPage() {
 
     return () => clearTimeout(timer);
   }, [isChatOpen, isPopupOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowFloatingChat(window.scrollY > 450);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!isChatOpen) return;
@@ -1564,14 +1575,16 @@ Source: Popup - Parler à un expert maintenant`
 
             </main>
 
-      {/* Floating call button */}
-      <button
-        type="button"
-        onClick={() => setIsChatOpen(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full border border-red-400 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-6 py-4 font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.35)] transition duration-500 hover:-translate-y-1 hover:from-red-700 hover:via-red-600 hover:to-red-700 hover:shadow-[0_18px_40px_rgba(239,68,68,0.45)] animate-[pulse_3.2s_ease-in-out_infinite]"
-      >
-        💬 Parler à un expert
-      </button>
+      {/* Floating chat button */}
+      {showFloatingChat && (
+        <button
+          type="button"
+          onClick={() => setIsChatOpen(true)}
+          className="fixed bottom-4 right-4 z-50 rounded-full border border-red-400 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-5 py-3 text-sm font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.35)] transition duration-500 hover:-translate-y-1 hover:from-red-700 hover:via-red-600 hover:to-red-700 hover:shadow-[0_18px_40px_rgba(239,68,68,0.45)] animate-[pulse_3.2s_ease-in-out_infinite] md:bottom-6 md:right-6 md:px-6 md:py-4 md:text-base"
+        >
+          💬 Parler à un expert
+        </button>
+      )}
 
       
 
