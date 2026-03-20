@@ -1764,7 +1764,7 @@ Source: Popup - Parler à un expert maintenant`
       {isPopupOpen && !isChatOpen && (
         <div className="fixed inset-0 z-[55] flex items-end justify-center bg-slate-950/60 p-3 md:items-center md:p-4 backdrop-blur-md">
           <div className="relative max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-white/20 bg-white shadow-2xl ring-1 ring-slate-200 md:max-h-none md:overflow-visible">
-            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-red-600 via-orange-500 to-red-700" />
+            <div className="absolute top-0 left-0 right-0 h-1.5 rounded-t-[2rem] bg-gradient-to-r from-red-600 via-orange-500 to-red-700 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.6)]" />
             <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-red-100/60 blur-3xl" />
             <div className="absolute left-0 top-16 h-32 w-32 rounded-full bg-amber-100/60 blur-3xl" />
 
