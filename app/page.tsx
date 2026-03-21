@@ -35,6 +35,20 @@ export default function ProprioSecurLandingPage() {
   const [offerEtat, setOfferEtat] = useState("État de la propriété");
   const [offerDelai, setOfferDelai] = useState("Délai souhaité");
 
+  const [partnerNom, setPartnerNom] = useState("");
+  const [partnerEntreprise, setPartnerEntreprise] = useState("");
+  const [partnerType, setPartnerType] = useState("Choisir un profil");
+  const [partnerEmail, setPartnerEmail] = useState("");
+  const [partnerTelephone, setPartnerTelephone] = useState("");
+  const [partnerMessage, setPartnerMessage] = useState("");
+  const [isPartnerSubmitting, setIsPartnerSubmitting] = useState(false);
+  const [partnerErrors, setPartnerErrors] = useState({
+    nom: false,
+    type: false,
+    email: false,
+    telephone: false,
+  });
+
   const [chatNom, setChatNom] = useState("");
   const [chatEmail, setChatEmail] = useState("");
   const [chatTelephone, setChatTelephone] = useState("");
@@ -192,7 +206,7 @@ ${mainMessage || "Aucun message"}`);
       offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
     ].filter(Boolean);
 
-const lineBreak = "\n";
+    const lineBreak = "\n";
     const estimationMessage = details.length > 0
       ? "Demande d'estimation rapide" + lineBreak + lineBreak + details.join(lineBreak)
       : "Demande d'estimation rapide (estimation)";
@@ -343,6 +357,72 @@ Source: Popup - Parler à un expert maintenant`
     }
   };
 
+  const validatePartnerForm = () => {
+    const emailValue = partnerEmail.trim();
+    const phoneDigits = partnerTelephone.split("").filter((char) => "0123456789".includes(char)).join("");
+
+    const newErrors = {
+      nom: partnerNom.trim() === "",
+      type: partnerType === "Choisir un profil",
+      email: !emailValue.includes("@") || !emailValue.includes("."),
+      telephone: phoneDigits.length < 10,
+    };
+
+    setPartnerErrors(newErrors);
+    return !Object.values(newErrors).some(Boolean);
+  };
+
+  const handlePartnerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validatePartnerForm()) {
+      return;
+    }
+
+    setIsPartnerSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("nom", partnerNom);
+      formData.append("email", partnerEmail);
+      formData.append("telephone", partnerTelephone);
+      formData.append("source", "Formulaire - Devenir partenaire");
+      formData.append("situation", partnerType);
+      formData.append(
+        "message",
+        `Entreprise: ${partnerEntreprise || "Non fournie"}
+Profil: ${partnerType}
+Message: ${partnerMessage || "Aucun message"}`
+      );
+
+      const response = await fetch("https://formspree.io/f/mzdjdpvk", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("Merci. Votre demande de partenariat a bien été envoyée.");
+        setPartnerNom("");
+        setPartnerEntreprise("");
+        setPartnerType("Choisir un profil");
+        setPartnerEmail("");
+        setPartnerTelephone("");
+        setPartnerMessage("");
+        setPartnerErrors({ nom: false, type: false, email: false, telephone: false });
+      } else {
+        const errorText = await response.text();
+        console.error("Formspree partner submit error", response.status, errorText);
+        alert(`Erreur Formspree (${response.status}). Vérifiez la configuration du formulaire.`);
+      }
+    } catch (error) {
+      console.error("Partner submit fetch error", error);
+      alert("Erreur réseau lors de l’envoi. Veuillez réessayer.");
+    } finally {
+      setIsPartnerSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
@@ -374,6 +454,7 @@ Source: Popup - Parler à un expert maintenant`
             <a href="#faq" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">FAQ</a>
             <a href="#blog" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Blog</a>
             <a href="#contact" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Contact</a>
+            <a href="#partenaires" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Devenir partenaire</a>
             <a
               href="#contact"
               className="rounded-2xl bg-red-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-red-700"
@@ -393,6 +474,7 @@ Source: Popup - Parler à un expert maintenant`
             <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">FAQ</a>
             <a href="#blog" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Blog</a>
             <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Contact</a>
+            <a href="#partenaires" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Devenir partenaire</a>
             <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="mt-2 inline-flex justify-center rounded-2xl bg-red-600 px-5 py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">Obtenir ma solution gratuite</a>
           </div>
         </div>
@@ -434,6 +516,10 @@ Source: Popup - Parler à un expert maintenant`
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                {/* BOOST CONVERSION: urgence + rareté */}
+                <div className="w-full rounded-xl bg-red-700/90 px-4 py-2 text-center text-sm font-bold text-white animate-pulse">
+                  ⚠️ Analyse prioritaire aujourd’hui – places limitées
+                </div>
                 <a
                   href="tel:5146593233"
                   className="rounded-2xl bg-green-500 px-6 py-4 text-center text-base font-semibold text-white shadow-lg transition hover:bg-green-400"
@@ -602,7 +688,7 @@ Source: Popup - Parler à un expert maintenant`
                     disabled={isMainSubmitting}
                     className="w-full rounded-2xl bg-blue-900 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    {isMainSubmitting ? "Envoi en cours..." : "Recevoir mon analyse gratuite"}
+                    {isMainSubmitting ? "Envoi en cours..." : "Recevoir mon analyse gratuite (réponse rapide)"}
                   </button>
 
                   {Object.values(mainErrors).some(Boolean) && (
@@ -613,6 +699,7 @@ Source: Popup - Parler à un expert maintenant`
 
                                                       <p className="text-center text-xs text-slate-500">
                     Service confidentiel. Aucune obligation.
+                  <br/>⏱ Réponse en moins de 24h dans la majorité des cas.
                   </p>
                 </form>
               </div>
@@ -1698,6 +1785,171 @@ Source: Popup - Parler à un expert maintenant`
           </div>
         </section>
 
+      <section className="bg-slate-50 py-20" id="partenaires">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <div className="rounded-[2rem] bg-gradient-to-br from-slate-900 via-blue-950 to-slate-800 p-8 text-white shadow-xl">
+              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-300">Réseau ProprioSécur</div>
+              <h2 className="mt-3 text-3xl font-bold md:text-5xl">Devenir partenaire</h2>
+              <p className="mt-5 text-lg leading-8 text-slate-200">
+                Cette section est destinée aux investisseurs, acheteurs et courtiers hypothécaires qui souhaitent collaborer avec ProprioSécur.
+              </p>
+              <div className="mt-8 space-y-4 text-sm leading-7 text-slate-200">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Recevoir des opportunités d’affaires ciblées</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Investir dans certains dossiers selon votre profil</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Référer des clients et développer un partenariat durable</div>
+              </div>
+              <div className="mt-8 rounded-2xl border border-green-400/20 bg-green-500/10 p-5 text-sm leading-7 text-green-100">
+                Vous êtes investisseur privé, acheteur immobilier ou courtier hypothécaire? Remplissez le formulaire pour nous présenter votre profil et votre intérêt.
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+              <div className="mb-6">
+                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Formulaire partenaire</div>
+                <h3 className="mt-3 text-2xl font-bold text-slate-900">Présentez votre profil</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Investisseur, acheteur ou courtier hypothécaire : remplissez ce formulaire si vous souhaitez acheter, investir votre argent ou référer des clients.
+                </p>
+              </div>
+
+              <form onSubmit={handlePartnerSubmit} className="space-y-4">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet</label>
+                  <input
+                    required
+                    type="text"
+                    value={partnerNom}
+                    onChange={(e) => {
+                      setPartnerNom(e.target.value);
+                      if (partnerErrors.nom) setPartnerErrors((prev) => ({ ...prev, nom: false }));
+                    }}
+                    placeholder="Votre nom complet"
+                    className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                      partnerErrors.nom
+                        ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                        : "border-slate-300 focus:border-green-600 focus:ring-green-100"
+                    }`}
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Entreprise (optionnel)</label>
+                  <input
+                    type="text"
+                    value={partnerEntreprise}
+                    onChange={(e) => setPartnerEntreprise(e.target.value)}
+                    placeholder="Nom de votre entreprise"
+                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Votre profil</label>
+                  <select
+                    required
+                    value={partnerType}
+                    onChange={(e) => {
+                      setPartnerType(e.target.value);
+                      if (partnerErrors.type) setPartnerErrors((prev) => ({ ...prev, type: false }));
+                    }}
+                    className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                      partnerErrors.type
+                        ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                        : "border-slate-300 focus:border-green-600 focus:ring-green-100"
+                    }`}
+                  >
+                    <option>Choisir un profil</option>
+                    <option>Investisseur</option>
+                    <option>Acheteur</option>
+                    <option>Courtier hypothécaire</option>
+                    <option>Autre partenaire</option>
+                  </select>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-slate-700">Courriel</label>
+                    <input
+                      required
+                      type="email"
+                      value={partnerEmail}
+                      onChange={(e) => {
+                        setPartnerEmail(e.target.value);
+                        if (partnerErrors.email) setPartnerErrors((prev) => ({ ...prev, email: false }));
+                      }}
+                      placeholder="votre@courriel.com"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        partnerErrors.email
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-green-600 focus:ring-green-100"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-slate-700">Téléphone</label>
+                    <input
+                      required
+                      type="tel"
+                      value={partnerTelephone}
+                      onChange={(e) => {
+                        setPartnerTelephone(e.target.value);
+                        if (partnerErrors.telephone) setPartnerErrors((prev) => ({ ...prev, telephone: false }));
+                      }}
+                      placeholder="514-659-3233"
+                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
+                        partnerErrors.telephone
+                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
+                          : "border-slate-300 focus:border-green-600 focus:ring-green-100"
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Message</label>
+                  <textarea
+                    value={partnerMessage}
+                    onChange={(e) => setPartnerMessage(e.target.value)}
+                    rows={5}
+                    placeholder="Expliquez votre intérêt : investir, acheter, référer des clients ou devenir partenaire."
+                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isPartnerSubmitting}
+                  className="w-full rounded-2xl bg-green-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isPartnerSubmitting ? "Envoi en cours..." : "Envoyer ma demande de partenariat"}
+                </button>
+
+                {Object.values(partnerErrors).some(Boolean) && (
+                  <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                    Veuillez compléter tous les champs obligatoires en rouge avant d’envoyer votre demande.
+                  </p>
+                )}
+
+                <p className="text-center text-xs text-slate-500">
+                  Demande confidentielle. Nous analysons chaque profil de partenaire avec sérieux.
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* STICKY CTA MOBILE */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex gap-2 border-t bg-white p-3 shadow-2xl md:hidden">
+        <a href="tel:5146593233" className="flex-1 rounded-xl bg-green-500 px-4 py-3 text-center text-sm font-bold text-white">
+          📞 Appeler
+        </a>
+        <button onClick={() => setIsChatOpen(true)} className="flex-1 rounded-xl bg-red-600 px-4 py-3 text-sm font-bold text-white">
+          💬 Expert
+        </button>
+      </div>
+
       <footer className="border-t border-slate-200 bg-gradient-to-br from-slate-50 to-white">
         <div className="mx-auto max-w-7xl px-6 py-14">
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.9fr_0.9fr]">
@@ -1748,6 +2000,7 @@ Source: Popup - Parler à un expert maintenant`
                 <li><a href="#blog" className="font-medium hover:text-slate-900">Blog</a></li>
                 <li><a href="#faq" className="font-medium hover:text-slate-900">FAQ</a></li>
                 <li><a href="#contact" className="font-medium hover:text-slate-900">Contact</a></li>
+                <li><a href="#partenaires" className="font-medium hover:text-slate-900">Devenir partenaire</a></li>
               </ul>
             </div>
           </div>
