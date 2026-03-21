@@ -194,10 +194,10 @@ ${mainMessage || "Aucun message"}`);
 
     setMainMessage(
   details.length > 0
-    ? "Demande d'estimation rapide
+    ? `Demande d'estimation rapide
 
-" + details.join("
-")
+${details.join("
+")}`
     : "Demande d'estimation rapide (estimation)"
 );
 
