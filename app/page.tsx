@@ -192,13 +192,11 @@ ${mainMessage || "Aucun message"}`);
       offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
     ].filter(Boolean);
 
-    const estimationMessage =
-      details.length > 0
-        ? "Demande d'estimation rapide
-
-" + details.join("
-")
-        : "Demande d'estimation rapide (estimation)";
+    const lineBreak = "
+";
+    const estimationMessage = details.length > 0
+      ? "Demande d'estimation rapide" + lineBreak + lineBreak + details.join(lineBreak)
+      : "Demande d'estimation rapide (estimation)";
 
     setMainMessage(estimationMessage);
 
