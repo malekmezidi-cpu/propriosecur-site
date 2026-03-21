@@ -189,25 +189,7 @@ ${mainMessage || "Aucun message"}`);
     const details = [
       offerType !== "Type de propriété" ? `Type de propriété : ${offerType}` : "",
       offerEtat !== "État de la propriété" ? `État de la propriété : ${offerEtat}` : "",
-      offerDelai !== "Délai souhaité" ? `Délai souhaité : ${offerDelai}` : "",
-    ].filter(Boolean);
-
-    setMainMessage(
-  details.length > 0
-    ? `Demande d'estimation rapide
-
-${details.join("
-")}`
-    : "Demande d'estimation rapide (estimation)"
-);
-
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  const validateMainForm = () => {
+      offerDelai !== "Délai souhaité" ? `Délai souhait=> {
     const emailValue = mainEmail.trim();
     const phoneDigits = mainTelephone.split("").filter((char) => "0123456789".includes(char)).join("");
 
