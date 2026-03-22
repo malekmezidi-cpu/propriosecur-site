@@ -37,7 +37,7 @@ export default function ProprioSecurLandingPage() {
 
   const [partnerNom, setPartnerNom] = useState("");
   const [partnerEntreprise, setPartnerEntreprise] = useState("");
-  const [partnerType, setPartnerType] = useState("Choisir un profil");
+  const [partnerType, setPartnerType] = useState("Choisir un type de partenaire");
   const [partnerEmail, setPartnerEmail] = useState("");
   const [partnerTelephone, setPartnerTelephone] = useState("");
   const [partnerMessage, setPartnerMessage] = useState("");
@@ -363,7 +363,7 @@ Source: Popup - Parler à un expert maintenant`
 
     const newErrors = {
       nom: partnerNom.trim() === "",
-      type: partnerType === "Choisir un profil",
+      type: partnerType === "Choisir un type de partenaire",
       email: !emailValue.includes("@") || !emailValue.includes("."),
       telephone: phoneDigits.length < 10,
     };
@@ -386,7 +386,7 @@ Source: Popup - Parler à un expert maintenant`
       formData.append("nom", partnerNom);
       formData.append("email", partnerEmail);
       formData.append("telephone", partnerTelephone);
-      formData.append("source", "Formulaire - Devenir partenaire");
+      formData.append("source", "Formulaire - Partenaires investisseurs et apporteurs d’affaires");
       formData.append("situation", partnerType);
       formData.append(
         "message",
@@ -405,7 +405,7 @@ Message: ${partnerMessage || "Aucun message"}`
         alert("Merci. Votre demande de partenariat a bien été envoyée.");
         setPartnerNom("");
         setPartnerEntreprise("");
-        setPartnerType("Choisir un profil");
+        setPartnerType("Choisir un type de partenaire");
         setPartnerEmail("");
         setPartnerTelephone("");
         setPartnerMessage("");
@@ -1789,27 +1789,27 @@ Message: ${partnerMessage || "Aucun message"}`
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <div className="rounded-[2rem] bg-gradient-to-br from-slate-900 via-blue-950 to-slate-800 p-8 text-white shadow-xl">
-              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-300">Réseau ProprioSécur</div>
+              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-300">Partenariats stratégiques</div>
               <h2 className="mt-3 text-3xl font-bold md:text-5xl">Devenir partenaire</h2>
               <p className="mt-5 text-lg leading-8 text-slate-200">
-                Cette section est destinée aux investisseurs, acheteurs et courtiers hypothécaires qui souhaitent collaborer avec ProprioSécur.
+                Cette section s’adresse aux investisseurs, acheteurs immobiliers et courtiers hypothécaires qui souhaitent développer une relation d’affaires sérieuse avec ProprioSécur.
               </p>
               <div className="mt-8 space-y-4 text-sm leading-7 text-slate-200">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Recevoir des opportunités d’affaires ciblées</div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Investir dans certains dossiers selon votre profil</div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Référer des clients et développer un partenariat durable</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Accéder à des dossiers ciblés selon votre profil et vos critères</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Participer à certaines opportunités d’investissement ou d’acquisition</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Référer des clients qualifiés dans un cadre professionnel et durable</div>
               </div>
               <div className="mt-8 rounded-2xl border border-green-400/20 bg-green-500/10 p-5 text-sm leading-7 text-green-100">
-                Vous êtes investisseur privé, acheteur immobilier ou courtier hypothécaire? Remplissez le formulaire pour nous présenter votre profil et votre intérêt.
+                Vous êtes investisseur privé, acheteur immobilier ou courtier hypothécaire? Présentez votre profil professionnel, votre capacité d’intervention et votre intérêt afin d’évaluer un partenariat potentiel.
               </div>
             </div>
 
             <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
               <div className="mb-6">
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Formulaire partenaire</div>
+                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Candidature partenaire</div>
                 <h3 className="mt-3 text-2xl font-bold text-slate-900">Présentez votre profil</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Investisseur, acheteur ou courtier hypothécaire : remplissez ce formulaire si vous souhaitez acheter, investir votre argent ou référer des clients.
+                  Remplissez ce formulaire si vous souhaitez acheter, investir votre capital, recevoir certains dossiers ciblés ou référer des clients.
                 </p>
               </div>
 
@@ -1834,18 +1834,18 @@ Message: ${partnerMessage || "Aucun message"}`
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Entreprise (optionnel)</label>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Entreprise / société (optionnel)</label>
                   <input
                     type="text"
                     value={partnerEntreprise}
                     onChange={(e) => setPartnerEntreprise(e.target.value)}
-                    placeholder="Nom de votre entreprise"
+                    placeholder="Nom de votre entreprise ou société"
                     className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Votre profil</label>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Type de partenaire</label>
                   <select
                     required
                     value={partnerType}
@@ -1859,11 +1859,11 @@ Message: ${partnerMessage || "Aucun message"}`
                         : "border-slate-300 focus:border-green-600 focus:ring-green-100"
                     }`}
                   >
-                    <option>Choisir un profil</option>
-                    <option>Investisseur</option>
-                    <option>Acheteur</option>
+                    <option>Choisir un type de partenaire</option>
+                    <option>Investisseur privé</option>
+                    <option>Acheteur immobilier</option>
                     <option>Courtier hypothécaire</option>
-                    <option>Autre partenaire</option>
+                    <option>Apporteur d’affaires / autre partenaire</option>
                   </select>
                 </div>
 
@@ -1912,7 +1912,7 @@ Message: ${partnerMessage || "Aucun message"}`
                     value={partnerMessage}
                     onChange={(e) => setPartnerMessage(e.target.value)}
                     rows={5}
-                    placeholder="Expliquez votre intérêt : investir, acheter, référer des clients ou devenir partenaire."
+                    placeholder="Présentez votre profil, votre capacité d’investissement ou d’acquisition, votre secteur, et la manière dont vous souhaitez collaborer avec ProprioSécur."
                     className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                   />
                 </div>
@@ -1922,7 +1922,7 @@ Message: ${partnerMessage || "Aucun message"}`
                   disabled={isPartnerSubmitting}
                   className="w-full rounded-2xl bg-green-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {isPartnerSubmitting ? "Envoi en cours..." : "Envoyer ma demande de partenariat"}
+                  {isPartnerSubmitting ? "Envoi en cours..." : "Soumettre ma demande de partenariat"}
                 </button>
 
                 {Object.values(partnerErrors).some(Boolean) && (
@@ -1932,7 +1932,7 @@ Message: ${partnerMessage || "Aucun message"}`
                 )}
 
                 <p className="text-center text-xs text-slate-500">
-                  Demande confidentielle. Nous analysons chaque profil de partenaire avec sérieux.
+                  Demande confidentielle. Chaque profil est analysé avec sérieux avant toute collaboration éventuelle.
                 </p>
               </form>
             </div>
