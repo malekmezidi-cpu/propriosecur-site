@@ -1785,12 +1785,12 @@ Message: ${partnerMessage || "Aucun message"}`
           </div>
         </section>
 
-      <section className="bg-slate-50 py-20" id="partenaires">
+      <section className="bg-[radial-gradient(circle_at_top_left,_rgba(15,23,42,0.98),_rgba(2,6,23,1)_55%,_rgba(15,23,42,0.98))] py-24" id="partenaires">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-            <div className="rounded-[2rem] bg-gradient-to-br from-slate-900 via-blue-950 to-slate-800 p-8 text-white shadow-xl">
-              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-300">Partenariats stratégiques</div>
-              <h2 className="mt-3 text-3xl font-bold md:text-5xl">Devenir partenaire</h2>
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-8 text-white shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+              <div className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Partenariats stratégiques</div>
+              <h2 className="mt-3 text-3xl font-bold text-white md:text-5xl">Partenaires investisseurs et apporteurs d’affaires</h2>
               <p className="mt-5 text-lg leading-8 text-slate-200">
                 Cette section s’adresse aux investisseurs, acheteurs immobiliers et courtiers hypothécaires qui souhaitent développer une relation d’affaires sérieuse avec ProprioSécur.
               </p>
@@ -1799,14 +1799,14 @@ Message: ${partnerMessage || "Aucun message"}`
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Participer à certaines opportunités d’investissement ou d’acquisition</div>
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Référer des clients qualifiés dans un cadre professionnel et durable</div>
               </div>
-              <div className="mt-8 rounded-2xl border border-green-400/20 bg-green-500/10 p-5 text-sm leading-7 text-green-100">
+              <div className="mt-8 rounded-2xl border border-emerald-300/20 bg-emerald-400/10 p-5 text-sm leading-7 text-emerald-100">
                 Vous êtes investisseur privé, acheteur immobilier ou courtier hypothécaire? Présentez votre profil professionnel, votre capacité d’intervention et votre intérêt afin d’évaluer un partenariat potentiel.
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="relative overflow-hidden rounded-[2rem] border border-emerald-200/40 bg-white p-8 shadow-[0_20px_80px_rgba(15,23,42,0.18)]">
               <div className="mb-6">
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Candidature partenaire</div>
+                <div className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-600">Candidature partenaire</div>
                 <h3 className="mt-3 text-2xl font-bold text-slate-900">Présentez votre profil</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
                   Remplissez ce formulaire si vous souhaitez acheter, investir votre capital, recevoir certains dossiers ciblés ou référer des clients.
@@ -1920,7 +1920,7 @@ Message: ${partnerMessage || "Aucun message"}`
                 <button
                   type="submit"
                   disabled={isPartnerSubmitting}
-                  className="w-full rounded-2xl bg-green-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="w-full rounded-2xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-4 text-base font-semibold text-white shadow-lg transition hover:from-green-700 hover:to-emerald-600 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {isPartnerSubmitting ? "Envoi en cours..." : "Soumettre ma demande de partenariat"}
                 </button>
