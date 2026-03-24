@@ -1714,6 +1714,7 @@ Message: ${partnerMessage || "Aucun message"}`
         </section>
 
         <section className="mx-auto max-w-7xl px-6 py-20">
+          <div className="grid gap-8 lg:grid-cols-2">
             <div className="rounded-2xl border border-green-200 bg-green-50 p-6 text-sm text-slate-700">
               <div className="font-semibold text-slate-900 mb-3">Articles populaires :</div>
               <div className="grid grid-cols-2 gap-2 text-xs">
