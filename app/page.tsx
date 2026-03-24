@@ -512,7 +512,7 @@ Message: ${partnerMessage || "Aucun message"}`
                 ✔ Analyse confidentielle • Réponse rapide • Sans obligation
               </div>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-100 md:text-xl">
-                ProprioSécur aide les propriétaires confrontés à un avis de 60 jours, un besoin de prêt privé ou une vente urgente à identifier rapidement la meilleure solution selon leur situation.
+                ProprioSécur aide les propriétaires confrontés à un avis de 60 jours, un besoin de prêt privé immobilier ou une vente urgente à identifier rapidement la meilleure solution selon leur situation.
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
@@ -737,7 +737,7 @@ Message: ${partnerMessage || "Aucun message"}`
               
               {
                 title: 'Prêt privé immobilier',
-                text: 'Dans certaines situations urgentes, un prêt privé peut permettre de stabiliser temporairement la situation financière et d’éviter une saisie ou un défaut de paiement. Des solutions peuvent être envisagées en 1er rang ou en 2ème rang selon la valeur de la propriété et la structure du dossier.',
+                text: 'Dans certaines situations urgentes, un prêt privé immobilier peut permettre de stabiliser temporairement la situation financière et d’éviter une saisie ou un défaut de paiement. Des solutions peuvent être envisagées en 1er rang ou en 2ème rang selon la valeur de la propriété et la structure du dossier.',
               },
             ].map((service) => (
               <div key={service.title} className="group rounded-[2rem] border border-blue-200 bg-gradient-to-br from-blue-50 to-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300">
@@ -770,7 +770,7 @@ Message: ${partnerMessage || "Aucun message"}`
                   },
                   {
                     title: '3. Besoin de vendre vite',
-                    text: 'Avez-vous besoin de vendre rapidement ou de stabiliser votre situation avec un prêt privé?'
+                    text: 'Avez-vous besoin de vendre rapidement ou de stabiliser votre situation avec un prêt privé immobilier?'
                   }
                 ].map((item) => (
                   <div key={item.title} className="rounded-[1.75rem] border border-blue-200 bg-white p-6 shadow-sm">
@@ -810,7 +810,7 @@ Message: ${partnerMessage || "Aucun message"}`
               {[
                 ['1', 'Premier contact', 'Vous nous appelez ou remplissez le formulaire en ligne.'],
                 ['2', 'Analyse du dossier', 'Nous évaluons la propriété, les dettes et les délais.'],
-                ['3', 'Proposition de solution', 'Nous vous présentons une solution adaptée à votre situation.'],
+                ['3', 'Proposition de solution', 'Nous vous présentons une prêt privé immobilier à votre situation.'],
                 ['4', 'Transaction notariée', 'Le processus se complète de façon encadrée et notariale.'],
               ].map(([num, title, text]) => (
                 <div key={num} className="group rounded-[2rem] bg-gradient-to-br from-blue-50 to-white p-8 shadow-sm ring-1 ring-blue-200 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-blue-300">
@@ -1158,7 +1158,7 @@ Message: ${partnerMessage || "Aucun message"}`
               {
                 slug: 'hypotheque-impayee',
                 title: 'Que faire si je ne peux plus payer mon hypothèque?',
-                text: 'Un aperçu des options possibles lorsque les paiements hypothécaires deviennent difficiles : vente rapide, prêt privé ou restructuration.',
+                text: 'Un aperçu des options possibles lorsque les paiements hypothécaires deviennent difficiles : vente rapide, prêt privé immobilier ou restructuration.',
               },
               {
                 slug: 'eviter-la-saisie',
@@ -1168,7 +1168,7 @@ Message: ${partnerMessage || "Aucun message"}`
               {
                 slug: 'pret-prive-immobilier',
                 title: 'Prêt privé immobilier : dans quels cas?',
-                text: 'Quand un prêt privé peut être utile pour stabiliser temporairement une situation et éviter des conséquences plus graves.',
+                text: 'Quand un prêt privé immobilier peut être utile pour stabiliser temporairement une situation et éviter des conséquences plus graves.',
               },
               {
                 slug: 'ameliorer-credit',
@@ -1303,7 +1303,7 @@ Message: ${partnerMessage || "Aucun message"}`
             <article id="article-preavis-60-jours" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
               <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Avis de 60 jours</div>
               <h3 className="mt-4 text-2xl font-bold text-slate-900">Avis de 60 jours : que faire rapidement?</h3>
-              <p className="mt-4 leading-8 text-slate-600">Lorsqu’un propriétaire reçoit un avis de 60 jours, il est important d’agir rapidement. La première étape consiste à comprendre le délai, à vérifier le montant dû et à évaluer la valeur réelle de la propriété. Selon la situation, plusieurs solutions peuvent être envisagées, comme une vente rapide, un prêt privé temporaire ou une structure achat-rachat. Plus l’analyse est faite tôt, plus les options sont nombreuses.</p>
+              <p className="mt-4 leading-8 text-slate-600">Lorsqu’un propriétaire reçoit un avis de 60 jours, il est important d’agir rapidement. La première étape consiste à comprendre le délai, à vérifier le montant dû et à évaluer la valeur réelle de la propriété. Selon la situation, plusieurs solutions peuvent être envisagées, comme une vente rapide, un prêt privé immobilier temporaire ou une structure achat-rachat. Plus l’analyse est faite tôt, plus les options sont nombreuses.</p>
             </article>
 
             <article id="article-vendre-preavis-60" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
@@ -1315,13 +1315,13 @@ Message: ${partnerMessage || "Aucun message"}`
             <article id="article-hypotheque-impayee" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
               <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Hypothèque impayée</div>
               <h3 className="mt-4 text-2xl font-bold text-slate-900">Que faire si je ne peux plus payer mon hypothèque?</h3>
-              <p className="mt-4 leading-8 text-slate-600">Quand les paiements hypothécaires deviennent difficiles, il faut éviter d’attendre la dernière minute. Un propriétaire peut parfois stabiliser sa situation avec une vente rapide, un prêt privé immobilier, une restructuration ou une autre solution adaptée. L’objectif est de préserver la valeur de la propriété et d’éviter que la situation se détériore davantage.</p>
+              <p className="mt-4 leading-8 text-slate-600">Quand les paiements hypothécaires deviennent difficiles, il faut éviter d’attendre la dernière minute. Un propriétaire peut parfois stabiliser sa situation avec une vente rapide, un prêt privé immobilier, une restructuration ou une autre prêt privé immobilier. L’objectif est de préserver la valeur de la propriété et d’éviter que la situation se détériore davantage.</p>
             </article>
 
             <article id="article-eviter-la-saisie" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
               <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Saisie immobilière</div>
               <h3 className="mt-4 text-2xl font-bold text-slate-900">Comment éviter la saisie immobilière</h3>
-              <p className="mt-4 leading-8 text-slate-600">Éviter la saisie immobilière exige une action rapide. Il faut d’abord comprendre les délais, évaluer les dettes et analyser les solutions disponibles. Dans certains cas, une vente rapide peut être la meilleure option. Dans d’autres, un prêt privé ou une transaction structurée peut offrir un délai supplémentaire. Chaque situation doit être analysée selon la propriété, la dette et l’urgence du dossier.</p>
+              <p className="mt-4 leading-8 text-slate-600">Éviter la saisie immobilière exige une action rapide. Il faut d’abord comprendre les délais, évaluer les dettes et analyser les solutions disponibles. Dans certains cas, une vente rapide peut être la meilleure option. Dans d’autres, un prêt privé immobilier ou une transaction structurée peut offrir un délai supplémentaire. Chaque situation doit être analysée selon la propriété, la dette et l’urgence du dossier.</p>
             </article>
 
             <article id="article-pret-prive-immobilier" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
@@ -1351,7 +1351,7 @@ Message: ${partnerMessage || "Aucun message"}`
             <article id="article-arreter-saisie-quebec" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
               <div className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">Saisie immobilière</div>
               <h3 className="mt-4 text-2xl font-bold text-slate-900">Peut-on arrêter une saisie immobilière au Québec?</h3>
-              <p className="mt-4 leading-8 text-slate-600">Dans certaines situations, il est possible d’éviter ou d’arrêter une saisie immobilière si le propriétaire agit rapidement. Des solutions comme la vente de la propriété, un refinancement, un prêt privé ou une entente avec le créancier peuvent parfois permettre de régler la dette avant que la procédure n’aboutisse. Chaque dossier est différent, mais plus l’action est rapide, plus les chances de trouver une solution sont élevées.</p>
+              <p className="mt-4 leading-8 text-slate-600">Dans certaines situations, il est possible d’éviter ou d’arrêter une saisie immobilière si le propriétaire agit rapidement. Des solutions comme la vente de la propriété, un refinancement, un prêt privé immobilier ou une entente avec le créancier peuvent parfois permettre de régler la dette avant que la procédure n’aboutisse. Chaque dossier est différent, mais plus l’action est rapide, plus les chances de trouver une solution sont élevées.</p>
             </article>
 
             <article id="article-defaut-hypothecaire-vendre" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
@@ -2028,7 +2028,7 @@ Message: ${partnerMessage || "Aucun message"}`
                     Situation urgente
                   </div>
                   <h3 className="mt-3 max-w-xl text-2xl font-extrabold leading-tight text-slate-900 sm:text-[2rem] md:mt-4 md:text-4xl">
-                    Avez-vous reçu un avis de 60 jours, besoin d’un prêt privé ou souhaitez-vous vendre votre propriété rapidement?
+                    Avez-vous reçu un avis de 60 jours, besoin d’un prêt privé immobilier ou souhaitez-vous vendre votre propriété rapidement?
                   </h3>
                   <p className="mt-3 max-w-2xl text-[15px] leading-7 text-slate-600 md:mt-4 md:text-lg md:leading-8">
                     Nous analysons votre situation gratuitement et en toute confidentialité afin de vous proposer la meilleure solution pour votre propriété.
