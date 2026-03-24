@@ -447,6 +447,7 @@ Message: ${partnerMessage || "Aucun message"}`
           </button>
 
           <div className="hidden items-center gap-7 md:flex">
+            <a href="#partenaires" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Devenir partenaire</a>
             <a href="#top" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Accueil</a>
             
             <a href="#services" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Services</a>
@@ -1748,8 +1749,32 @@ Message: ${partnerMessage || "Aucun message"}`
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-          <div className="grid gap-6 lg:grid-cols-2">
+      <section className="mx-auto max-w-7xl px-6 py-20" id="partenaires">
+          <div className="text-center mb-12">
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-green-600">Partenaires</div>
+            <h2 className="mt-3 text-3xl font-bold md:text-5xl">Partenaires investisseurs et apporteurs d’affaires</h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+              Vous êtes investisseur, acheteur ou courtier hypothécaire? Collaborez avec nous pour analyser des dossiers et développer des opportunités.
+            </p>
+          </div>
+
+          <form onSubmit={handlePartnerSubmit} className="max-w-3xl mx-auto space-y-4">
+            <input type="text" placeholder="Nom" value={partnerNom} onChange={(e)=>setPartnerNom(e.target.value)} className="w-full rounded-xl border px-4 py-3" />
+            <input type="text" placeholder="Entreprise (optionnel)" value={partnerEntreprise} onChange={(e)=>setPartnerEntreprise(e.target.value)} className="w-full rounded-xl border px-4 py-3" />
+            <select value={partnerType} onChange={(e)=>setPartnerType(e.target.value)} className="w-full rounded-xl border px-4 py-3">
+              <option>Choisir un type de partenaire</option>
+              <option>Investisseur</option>
+              <option>Acheteur</option>
+              <option>Courtier hypothécaire</option>
+            </select>
+            <input type="email" placeholder="Courriel" value={partnerEmail} onChange={(e)=>setPartnerEmail(e.target.value)} className="w-full rounded-xl border px-4 py-3" />
+            <input type="tel" placeholder="Téléphone" value={partnerTelephone} onChange={(e)=>setPartnerTelephone(e.target.value)} className="w-full rounded-xl border px-4 py-3" />
+            <textarea placeholder="Message" value={partnerMessage} onChange={(e)=>setPartnerMessage(e.target.value)} className="w-full rounded-xl border px-4 py-3" />
+            <button type="submit" className="w-full rounded-2xl bg-red-600 px-6 py-4 text-white font-bold">Devenir partenaire</button>
+          </form>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 py-20">
             <div className="rounded-2xl border border-green-200 bg-green-50 p-6 text-sm text-slate-700">
               <div className="font-semibold text-slate-900 mb-3">Articles populaires :</div>
               <div className="grid grid-cols-2 gap-2 text-xs">
@@ -1847,7 +1872,7 @@ Message: ${partnerMessage || "Aucun message"}`
                 <li><a href="#blog" className="font-medium hover:text-slate-900">Blog</a></li>
                 <li><a href="#faq" className="font-medium hover:text-slate-900">FAQ</a></li>
                 <li><a href="#contact" className="font-medium hover:text-slate-900">Contact</a></li>
-                <li><a </li>
+                <li><a href="#partenaires" className="font-medium hover:text-slate-900">Devenir partenaire</a></li>
               </ul>
             </div>
           </div>
