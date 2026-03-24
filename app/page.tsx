@@ -454,7 +454,7 @@ Message: ${partnerMessage || "Aucun message"}`
             <a href="#faq" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">FAQ</a>
             <a href="#blog" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Blog</a>
             <a href="#contact" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Contact</a>
-            <a href="#partenaires" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Devenir partenaire</a>
+            
             <a
               href="#contact"
               className="rounded-2xl bg-red-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-red-700"
@@ -1785,160 +1785,7 @@ Message: ${partnerMessage || "Aucun message"}`
           </div>
         </section>
 
-      <section className="bg-[radial-gradient(circle_at_top_left,_rgba(15,23,42,0.98),_rgba(2,6,23,1)_55%,_rgba(15,23,42,0.98))] py-24" id="partenaires">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-8 text-white shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-              <div className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Partenariats stratégiques</div>
-              <h2 className="mt-3 text-3xl font-bold text-white md:text-5xl">Partenaires investisseurs et apporteurs d’affaires</h2>
-              <p className="mt-5 text-lg leading-8 text-slate-200">
-                Cette section s’adresse aux investisseurs, acheteurs immobiliers et courtiers hypothécaires qui souhaitent développer une relation d’affaires sérieuse avec ProprioSécur.
-              </p>
-              <div className="mt-8 space-y-4 text-sm leading-7 text-slate-200">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Accéder à des dossiers ciblés selon votre profil et vos critères</div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Participer à certaines opportunités d’investissement ou d’acquisition</div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Référer des clients qualifiés dans un cadre professionnel et durable</div>
-              </div>
-              <div className="mt-8 rounded-2xl border border-emerald-300/20 bg-emerald-400/10 p-5 text-sm leading-7 text-emerald-100">
-                Vous êtes investisseur privé, acheteur immobilier ou courtier hypothécaire? Présentez votre profil professionnel, votre capacité d’intervention et votre intérêt afin d’évaluer un partenariat potentiel.
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-[2rem] border border-emerald-200/40 bg-white p-8 shadow-[0_20px_80px_rgba(15,23,42,0.18)]">
-              <div className="mb-6">
-                <div className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-600">Candidature partenaire</div>
-                <h3 className="mt-3 text-2xl font-bold text-slate-900">Présentez votre profil</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Remplissez ce formulaire si vous souhaitez acheter, investir votre capital, recevoir certains dossiers ciblés ou référer des clients.
-                </p>
-              </div>
-
-              <form onSubmit={handlePartnerSubmit} className="space-y-4">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet</label>
-                  <input
-                    required
-                    type="text"
-                    value={partnerNom}
-                    onChange={(e) => {
-                      setPartnerNom(e.target.value);
-                      if (partnerErrors.nom) setPartnerErrors((prev) => ({ ...prev, nom: false }));
-                    }}
-                    placeholder="Votre nom complet"
-                    className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
-                      partnerErrors.nom
-                        ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
-                        : "border-slate-300 focus:border-green-600 focus:ring-green-100"
-                    }`}
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Entreprise / société (optionnel)</label>
-                  <input
-                    type="text"
-                    value={partnerEntreprise}
-                    onChange={(e) => setPartnerEntreprise(e.target.value)}
-                    placeholder="Nom de votre entreprise ou société"
-                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Type de partenaire</label>
-                  <select
-                    required
-                    value={partnerType}
-                    onChange={(e) => {
-                      setPartnerType(e.target.value);
-                      if (partnerErrors.type) setPartnerErrors((prev) => ({ ...prev, type: false }));
-                    }}
-                    className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
-                      partnerErrors.type
-                        ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
-                        : "border-slate-300 focus:border-green-600 focus:ring-green-100"
-                    }`}
-                  >
-                    <option>Choisir un type de partenaire</option>
-                    <option>Investisseur privé</option>
-                    <option>Acheteur immobilier</option>
-                    <option>Courtier hypothécaire</option>
-                    <option>Apporteur d’affaires / autre partenaire</option>
-                  </select>
-                </div>
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-slate-700">Courriel</label>
-                    <input
-                      required
-                      type="email"
-                      value={partnerEmail}
-                      onChange={(e) => {
-                        setPartnerEmail(e.target.value);
-                        if (partnerErrors.email) setPartnerErrors((prev) => ({ ...prev, email: false }));
-                      }}
-                      placeholder="votre@courriel.com"
-                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
-                        partnerErrors.email
-                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
-                          : "border-slate-300 focus:border-green-600 focus:ring-green-100"
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-slate-700">Téléphone</label>
-                    <input
-                      required
-                      type="tel"
-                      value={partnerTelephone}
-                      onChange={(e) => {
-                        setPartnerTelephone(e.target.value);
-                        if (partnerErrors.telephone) setPartnerErrors((prev) => ({ ...prev, telephone: false }));
-                      }}
-                      placeholder="514-659-3233"
-                      className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:ring-2 ${
-                        partnerErrors.telephone
-                          ? "border-red-500 bg-red-50 focus:border-red-600 focus:ring-red-200"
-                          : "border-slate-300 focus:border-green-600 focus:ring-green-100"
-                      }`}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Message</label>
-                  <textarea
-                    value={partnerMessage}
-                    onChange={(e) => setPartnerMessage(e.target.value)}
-                    rows={5}
-                    placeholder="Présentez votre profil, votre capacité d’investissement ou d’acquisition, votre secteur, et la manière dont vous souhaitez collaborer avec ProprioSécur."
-                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isPartnerSubmitting}
-                  className="w-full rounded-2xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-4 text-base font-semibold text-white shadow-lg transition hover:from-green-700 hover:to-emerald-600 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  {isPartnerSubmitting ? "Envoi en cours..." : "Soumettre ma demande de partenariat"}
-                </button>
-
-                {Object.values(partnerErrors).some(Boolean) && (
-                  <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
-                    Veuillez compléter tous les champs obligatoires en rouge avant d’envoyer votre demande.
-                  </p>
-                )}
-
-                <p className="text-center text-xs text-slate-500">
-                  Demande confidentielle. Chaque profil est analysé avec sérieux avant toute collaboration éventuelle.
-                </p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* STICKY CTA MOBILE */}
       <div className="fixed bottom-0 left-0 right-0 z-50 flex gap-2 border-t bg-white p-3 shadow-2xl md:hidden">
@@ -2000,7 +1847,7 @@ Message: ${partnerMessage || "Aucun message"}`
                 <li><a href="#blog" className="font-medium hover:text-slate-900">Blog</a></li>
                 <li><a href="#faq" className="font-medium hover:text-slate-900">FAQ</a></li>
                 <li><a href="#contact" className="font-medium hover:text-slate-900">Contact</a></li>
-                <li><a href="#partenaires" className="font-medium hover:text-slate-900">Devenir partenaire</a></li>
+                <li><a </li>
               </ul>
             </div>
           </div>
