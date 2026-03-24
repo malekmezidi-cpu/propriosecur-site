@@ -824,70 +824,9 @@ Message: ${partnerMessage || "Aucun message"}`
           </div>
         </section>
 
-        {/* SEO structured data for Google */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "ProprioSécur",
-        "telephone": "+1-514-659-3233",
-        "email": "info@propriosecur.com",
-        "description": "Solutions pour propriétaires en difficulté au Québec : avis de 60 jours, vente rapide de propriété, prêt privé immobilier et solutions achat-rachat.",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "4053 Rue Bélair",
-          "addressLocality": "Montréal",
-          "addressRegion": "QC",
-          "postalCode": "H2A 2G4",
-          "addressCountry": "CA"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "45.5017",
-          "longitude": "-73.5673"
-        },
-        "areaServed": {
-          "@type": "Place",
-          "name": "Grand Montréal"
-        },
-        "serviceType": [
-          "Avis de 60 jours",
-          "Sauvetage immobilier",
-          "Vente rapide de propriété",
-          "Prêt privé immobilier"
-        ]
-      }) }} />
+        
 
-      {/* FAQ Schema for Google rich results */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Est‑ce que l’analyse est confidentielle?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Oui. Toutes les informations partagées sont traitées avec discrétion et utilisées uniquement pour analyser votre situation."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Est‑ce que je suis obligé d’accepter une solution?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Non. L’analyse initiale est sans obligation et vous demeurez libre d’accepter ou non la solution proposée."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Intervenez‑vous rapidement?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Oui. Selon le dossier, une analyse peut être commencée rapidement afin de vous orienter sans perdre de temps."
-            }
-          }
-        ]
-      }) }} />
+      
 
         <section className="bg-slate-950 py-20 text-white">
         <div className="mx-auto max-w-5xl px-6">
