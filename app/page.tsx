@@ -446,15 +446,13 @@ Message: ${partnerMessage || "Aucun message"}`
             {isMobileMenuOpen ? "✕" : "☰"}
           </button>
 
-          <div className="hidden items-center gap-7 md:flex">
+          <div className="hidden items-center gap-5 md:flex">
             <a href="#top" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Accueil</a>
             <a href="#services" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Services</a>
             <a href="#processus" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Processus</a>
-            <a href="#faq" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">FAQ</a>
             <a href="#blog" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Blog</a>
-            <a href="#partenaires" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Devenir partenaire</a>
-            <a href="#contact" className="text-sm font-semibold text-slate-600 transition hover:text-slate-900">Contact</a>
-            
+            <a href="#partenaires" className="rounded-full border border-green-200 bg-green-50 px-4 py-2 text-sm font-semibold text-green-700 transition hover:border-green-300 hover:bg-green-100 hover:text-green-800">Devenir partenaire</a>
+            <a href="#contact" className="text-sm font-semibold text-slate-700 transition hover:text-slate-900">Contact</a>
             <a
               href="#contact"
               className="rounded-2xl bg-red-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-red-700"
@@ -471,9 +469,8 @@ Message: ${partnerMessage || "Aucun message"}`
             <a href="#top" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Accueil</a>
             <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Services</a>
             <a href="#processus" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Processus</a>
-            <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">FAQ</a>
             <a href="#blog" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Blog</a>
-            <a href="#partenaires" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Devenir partenaire</a>
+            <a href="#partenaires" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 transition hover:bg-green-100">Devenir partenaire</a>
             <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Contact</a>
             <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="mt-2 inline-flex justify-center rounded-2xl bg-red-600 px-5 py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">Obtenir ma solution gratuite</a>
           </div>
